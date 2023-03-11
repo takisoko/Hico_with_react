@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32519.379
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hico", "Hico\Hico.csproj", "{0F068FA5-DE11-4656-B5FB-1073F39D0F36}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "reactapp", "reactapp\reactapp.esproj", "{C82E6564-C453-45C3-A735-C8B4EE5FA2D2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0F068FA5-DE11-4656-B5FB-1073F39D0F36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F068FA5-DE11-4656-B5FB-1073F39D0F36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F068FA5-DE11-4656-B5FB-1073F39D0F36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F068FA5-DE11-4656-B5FB-1073F39D0F36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C82E6564-C453-45C3-A735-C8B4EE5FA2D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C82E6564-C453-45C3-A735-C8B4EE5FA2D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C82E6564-C453-45C3-A735-C8B4EE5FA2D2}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{C82E6564-C453-45C3-A735-C8B4EE5FA2D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C82E6564-C453-45C3-A735-C8B4EE5FA2D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C82E6564-C453-45C3-A735-C8B4EE5FA2D2}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {02F2D816-BE9B-4DAA-8407-8C5BEE85BDD1}
+	EndGlobalSection
+EndGlobal
