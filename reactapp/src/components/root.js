@@ -39,10 +39,21 @@ export default function Root() {
                         <li>
                             <Link to={"fetchdata"}>FetchData</Link>
                         </li>
+                        <li>
+                            <Link to={"materials"}>Materials</Link>
+                        </li>
+                        <li>
+                            <Link to={"units"}>Units</Link>
+                        </li>
+                        <li>
+                            <Link to={"tasks"}>Tasks</Link>
+                        </li>
                     </ul>
                 </nav>
             </div>
-            <div id="detail"></div>
+            <div id="detail">
+                <Outlet />
+            </div>
         </>
     );
 }

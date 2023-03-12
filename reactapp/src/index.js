@@ -9,6 +9,10 @@ import { Home } from './components/Home';
 import Root from './components/root';
 import reportWebVitals from './reportWebVitals';
 import { FetchData } from './components/FetchData';
+import { Materials } from './components/materials';
+import { Units } from './components/units';
+import { Tasks } from './components/tasks';
+
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
@@ -19,19 +23,31 @@ const router = createBrowserRouter([
         element: <Root />,
         errorElement: <Root />,
         children: [
-            
+            {
+                path: 'home',
+                element: <Home />
+            },
+            {
+                path: 'counter',
+                element: <Counter />
+            },
+            {
+                path: 'fetchdata',
+                element: <FetchData />
+            },
+            {
+                path: 'materials',
+                element: <Materials />
+            },
+            {
+                path: 'units',
+                element: <Units />
+            },
+            {
+                path: 'tasks',
+                element: <Tasks />
+            }
         ]
-    }, {
-        path: 'home',
-        element: <Home />
-    },
-    {
-        path: 'counter',
-        element: <Counter />
-    },
-    {
-        path: 'fetchdata',
-        element: <FetchData />
     }
 ]);
 
