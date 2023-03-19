@@ -33,7 +33,6 @@ export function Materials() {
                     (response && response.status === 201) ||
                     (response && response.status === 200)
                 ) {
-                    console.log("materials", response.data.materials);
                     setLoading(false);
                     setMaterials(response.data.materials);
                 }

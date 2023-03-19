@@ -16,12 +16,14 @@ namespace Hico.Services
         public async Task<bool> CreateUnit(UnitDto unit)
         {
 
+            var typeByName = GetUnitTypeId(unit.TypeName);
+
+            if (typeByName == 0)
+                return false;
             var unitToCreate = new Unit()
             {
-
-                Id = unit.Id,
                 Name = unit.Name,
-                Type = unit.Type,
+                Type = typeByName
 
             };
             _dbContext.Add(unitToCreate);
@@ -72,6 +74,20 @@ namespace Hico.Services
             unitTypes.Add(UnitTypeEnum.Length.ToString());
 
             return unitTypes;
+        }
+
+        public UnitTypeEnum GetUnitTypeId(string typeName)
+        {
+            if(typeName == UnitTypeEnum.Length.ToString())
+            {
+                return UnitTypeEnum.Length;
+            }
+            else if (typeName == UnitTypeEnum.Volume.ToString())
+            {
+                return UnitTypeEnum.Volume;
+            }
+
+            return 0;
         }
     }
 }

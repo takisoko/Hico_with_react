@@ -1,6 +1,7 @@
 import React, { Component, useState, useEffect } from "react";
 import axios, * as others from 'axios';
 import { useParams } from "react-router-dom";
+import { UnitModal } from "./Modal";
 import {
     Autocomplete,
     FormControl, InputLabel, Select, MenuItem
@@ -10,42 +11,20 @@ import {
 
 export function Units() {
     const [units, setUnits] = useState(null);
-    const [unitTypes, setUnitTypes] = useState(null);
     const [loading, setLoading] = useState(true);
     const [value, setValue] = useState(null);
+    const [index, setIndex] = useState(0);
 
     useEffect(() => {
 
         fetchData();
-       /* fetchUnitData();*/
 
-    }, []);
+    }, [index]);
 
-
-    const fetchUnitData = () => {
-        axios
-            .get('https://localhost:7012/unit/unitTypes')
-            .then(function (response) {
-                if (
-                    (response && response.status === 201) ||
-                    (response && response.status === 200)
-                ) {
-                    console.log("unitTypes", response.data);
-                    setLoading(false);
-                    setUnitTypes(response.data);
-                    console.log("unitTypes2", unitTypes);
-                }
-            })
-            .catch((e) => {
-                console.log("error", e);
-            });
+    const refreshTable = () => {
+        setIndex(index + 1);
     };
 
-    const handleSelectChange = (e) => {
-
-        console.log("e", e.target);
-        setValue(e.target.value)
-    }
 
     const fetchData = () => {
         axios
@@ -55,10 +34,8 @@ export function Units() {
                     (response && response.status === 201) ||
                     (response && response.status === 200)
                 ) {
-                    console.log("units", response.data);
                     setLoading(false);
                     setUnits(response.data);
-                    console.log("units2", units);
                 }
             })
             .catch((e) => {
@@ -68,27 +45,12 @@ export function Units() {
 
     return (
         <div>
+            <UnitModal refreshTable={refreshTable }/>
             <h1 id="tabelLabel" >Units</h1>
             {loading
                 ? <p><em>Loading...</em></p>
                 :
                 <>
-                    <div>
-                        <FormControl fullWidth>
-                            <InputLabel id="Unit types">Unit types</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={value || ''}
-                                label="Unit types"
-                                onChange={handleSelectChange}
-                            >
-                                {units.map(unit =>
-                                    <MenuItem key={unit.name}  value={unit.name}>{unit.name}</MenuItem>
-                                )}
-                            </Select>
-                        </FormControl>
-                    </div>
                     <table className='table table-striped' aria-labelledby="tabelLabel">
                     <thead>
                         <tr>

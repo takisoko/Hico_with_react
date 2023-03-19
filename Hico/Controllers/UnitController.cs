@@ -37,7 +37,7 @@ namespace Hico.Controllers
         {
             var result = _unitService.GetUnitTypes();
 
-            return Ok(result);
+            return Ok(result.ToArray());
         }
 
         // <summary>
