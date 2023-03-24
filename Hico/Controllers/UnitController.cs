@@ -63,5 +63,18 @@ namespace Hico.Controllers
 
             return Ok(result != null ? true : false);
         }
+
+        /// <summary>
+        /// Deletes a unit with given id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUnitAsync(int id)
+        {
+            var result = await _unitService.DeleteUnit(id);
+
+            return Ok(result);
+        }
     }
 }

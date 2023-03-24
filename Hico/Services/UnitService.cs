@@ -89,5 +89,13 @@ namespace Hico.Services
 
             return 0;
         }
+
+        public async Task<bool> DeleteUnit(int id)
+        {
+            var unitToDelete = await GetUnitById(id);
+            _dbContext.Remove(unitToDelete);
+            var success = await _dbContext.SaveChangesAsync();
+            return success != 0 ? true : false;
+        }
     }
 }
