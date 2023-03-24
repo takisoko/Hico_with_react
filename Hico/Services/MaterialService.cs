@@ -125,7 +125,14 @@ namespace Hico.Services
 
         public async Task<MaterialResult> CreateMaterial(MaterialDto material)
         {
-            var unit = await _unitService.GetUnitById(material.UnitOfIssueId);
+            var unit = await _unitService.GetUnitById(material.UnitOfIssue.Id);
+
+            if(unit == null)
+                return new MaterialResult()
+                {
+                    Material = null,
+                    success = false
+                };
 
             var materialToCreate = new Material()
             {
@@ -135,6 +142,7 @@ namespace Hico.Services
                 UnitOfUsage = unit
 
             };
+
             _dbContext.Add(materialToCreate);
             var success = await _dbContext.SaveChangesAsync();
 
