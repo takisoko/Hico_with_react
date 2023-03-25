@@ -44,10 +44,11 @@ namespace Hico.Controllers
         /// Return a list of all units.
         /// </summary>
         /// <returns></returns>
-        [HttpGet(Name = "GetUnit")]
-        public async Task<IActionResult> Get()
+        [HttpGet("AllUnits/{unitType}")]
+        public async Task<IActionResult> Get(int unitType)
         {
-            var result = await _unitService.GetAllUnits();
+            UnitTypeEnum? type = (UnitTypeEnum)unitType;
+            var result = await _unitService.GetAllUnits(type);
 
             return Ok(result.ToArray());
         }

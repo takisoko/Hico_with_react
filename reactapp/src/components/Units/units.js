@@ -27,7 +27,6 @@ export function Units() {
     };
 
     const onDelete = (id) => {
-        console.log("id", id);
         axios
             .delete('https://localhost:7012/unit/' + id)
             .then(function (response) {
@@ -46,7 +45,7 @@ export function Units() {
 
     const fetchData = () => {
         axios
-            .get('https://localhost:7012/unit')
+            .get('https://localhost:7012/unit/allUnits/0')
             .then(function (response) {
                 if (
                     (response && response.status === 201) ||

@@ -3,29 +3,28 @@ import { Button, Modal, Box, Typography, TextField, IconButton, Divider } from '
 /*import CloseIcon from '@mui/icons-material/Close';*/
 import axios, * as others from 'axios';
 import {    FormControl, InputLabel, Select, MenuItem } from "@mui/material";
-
+import { IconEdit } from "@tabler/icons-react";
     
 
 
-export function AddMaterialModal({ refreshTable, id, mode }) {
+export function AddMaterialModal({ refreshTable, id, mode, type }) {
     const [open, setOpen] = useState(false);
     const [units, setUnits] = useState([]);
     const [value, setValue] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [formData, setFormData] = useState({ PartNumber: '', ManufacturerCode: 0, Price: 0, UnitOfIssueId: 0 });
+    const [formData, setFormData] = useState({ Id: id, PartNumber: '', ManufacturerCode: 0, Price: 0, UnitOfIssueId: 0 });
 
     useEffect(() => {
-        console.log("useEffect open");
-        fetchUnitData();
+        if(open)
+            fetchUnitData();
 
     }, [open]);
 
 
     const fetchUnitData = () => {
 
-        console.log("fetchUnitData");
         axios
-            .get('https://localhost:7012/unit')
+            .get('https://localhost:7012/unit/allUnits/' + type)
             .then(function (response) {
                 if (
                     (response && response.status === 201) ||
@@ -40,7 +39,6 @@ export function AddMaterialModal({ refreshTable, id, mode }) {
             });
 
         if (mode == 'edit') {
-            console.log("fetchMaterialData", id);
             axios
                 .get('https://localhost:7012/material/'+ id)
                 .then(function (response) {
@@ -48,8 +46,7 @@ export function AddMaterialModal({ refreshTable, id, mode }) {
                         (response && response.status === 201) ||
                         (response && response.status === 200)
                     ) {
-                        console.log("responsess", response);
-                        setFormData({ PartNumber: response.data.material.partNumber, ManufacturerCode: parseInt(response.data.material.manufacturerCode), Price: parseInt(response.data.material.price), UnitOfIssueId: parseInt(response.data.material.unitOfIssueId) })
+                        setFormData({ Id: id, PartNumber: response.data.material.partNumber, ManufacturerCode: parseInt(response.data.material.manufacturerCode), Price: parseInt(response.data.material.price), UnitOfIssueId: parseInt(response.data.material.unitOfIssueId) })
                     }
                 })
                 .catch((e) => {
@@ -57,24 +54,23 @@ export function AddMaterialModal({ refreshTable, id, mode }) {
                 });
         }
 
-        console.log("response formData", formData);
     };
 
     const handleSelectChange = (e) => {
         setValue(e.target.value)
-        setFormData({ PartNumber: formData.PartNumber, ManufacturerCode: formData.ManufacturerCode, Price: formData.Price, UnitOfIssueId: e.target.value })
+        setFormData({ Id: formData.Id, PartNumber: formData.PartNumber, ManufacturerCode: formData.ManufacturerCode, Price: formData.Price, UnitOfIssueId: e.target.value })
     }
 
     const handleManufacturerCodeChange = (e) => {
-        setFormData({ PartNumber: formData.PartNumber, ManufacturerCode: e.target.value, Price: formData.Price, UnitOfIssueId: formData.UnitOfIssueId })
+        setFormData({ Id: formData.Id, PartNumber: formData.PartNumber, ManufacturerCode: e.target.value, Price: formData.Price, UnitOfIssueId: formData.UnitOfIssueId })
     }
 
     const handlePriceChange = (e) => {
-        setFormData({ PartNumber: formData.PartNumber, ManufacturerCode: formData.ManufacturerCode, Price: e.target.value, UnitOfIssueId: formData.UnitOfIssueId })
+        setFormData({ Id: formData.Id, PartNumber: formData.PartNumber, ManufacturerCode: formData.ManufacturerCode, Price: e.target.value, UnitOfIssueId: formData.UnitOfIssueId })
     }
 
     const handlePartNumberChange = (e) => {
-        setFormData({ PartNumber: e.target.value, ManufacturerCode: formData.ManufacturerCode, Price: formData.Price, UnitOfIssueId: formData.UnitOfIssueId })
+        setFormData({ Id: formData.Id, PartNumber: e.target.value, ManufacturerCode: formData.ManufacturerCode, Price: formData.Price, UnitOfIssueId: formData.UnitOfIssueId })
     }
 
 
@@ -89,30 +85,56 @@ export function AddMaterialModal({ refreshTable, id, mode }) {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        console.log("response formData", formData);
-        axios
-            .post('https://localhost:7012/material', formData)
-            .then(function (response) {
-                if (
-                    (response && response.status === 201) ||
-                    (response && response.status === 200)
-                ) {
-                    setOpen(false);
-                    refreshTable();
-                }
-            })
-            .catch((e) => {
-                console.log("error", e);
-            });
+        if (mode == 'edit') {
+            setFormData({ Id: id, PartNumber: formData.PartNumber, ManufacturerCode: formData.ManufacturerCode, Price: formData.Price, UnitOfIssueId: formData.UnitOfIssueId })
+
+            axios
+                .put('https://localhost:7012/material/', formData)
+                .then(function (response) {
+                    if (
+                        (response && response.status === 201) ||
+                        (response && response.status === 200)
+                    ) {
+                        setOpen(false);
+                        refreshTable();
+                    }
+                    else if (response && response.status === 400) {
+                        console.log(response.data.message);
+                    }
+                })
+                .catch((e) => {
+                    let er = e.response;
+                    if (er.status === 400) {
+                        console.log(er.data.message);
+                    }
+                    console.log("error", e);
+                });
+        }
+        else {
+            axios
+                .post('https://localhost:7012/material', formData)
+                .then(function (response) {
+                    if (
+                        (response && response.status === 201) ||
+                        (response && response.status === 200)
+                    ) {
+                        setOpen(false);
+                        refreshTable();
+                    }
+                })
+                .catch((e) => {
+                    console.log("error", e);
+                });
+        }
     }
 
     return (
         <div>
-            <Button variant="contained" sx={{ textTransform: 'none' }} onClick={handleOpen}>+ Add Material</Button>
+            <Button variant="contained" sx={{ textTransform: 'none' }} onClick={handleOpen}>{mode != "edit" ? "+ Add Material" : <IconEdit/>}</Button>
             <Modal open={open} onClose={handleClose}>
                 <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', boxShadow: 24, p: 4, width: '50vw', maxWidth: 500 }}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Typography variant="h6" component="h2">Add New Material</Typography>
+                        <Typography variant="h6" component="h2"> {mode != "edit" ? "Add New Material" : "Edit Material"}</Typography>
                         <IconButton onClick={handleClose}>
                             {/*<CloseIcon />*/}
                         </IconButton>

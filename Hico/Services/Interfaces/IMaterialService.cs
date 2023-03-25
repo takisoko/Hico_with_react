@@ -8,8 +8,8 @@ namespace Hico.Services.Interfaces
     {
         Task<MaterialResult> GetMaterialById(Guid id);
         Task<MaterialResult> DeleteMaterial(Guid id);
-        Task<MaterialResult> UpdateMaterial(MaterialDto material);
-        Task<MaterialResult> CreateMaterial(MaterialDto material);
+        Task<MaterialResult> UpdateMaterial(AddEditMaterialDto material);
+        Task<MaterialResult> CreateMaterial(AddEditMaterialDto material);
         Task<MaterialsListResult> GetAllMaterials();
         Task<Material> GetMaterial(Guid id);
     }

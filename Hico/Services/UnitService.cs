@@ -32,9 +32,10 @@ namespace Hico.Services
             return success != 0 ? true : false;
         }
 
-        public async Task<List<UnitDto>> GetAllUnits()
+        public async Task<List<UnitDto>> GetAllUnits(UnitTypeEnum? type)
         {
-            var units = await _dbContext.Units.ToListAsync();
+            var units = await _dbContext.Units.Where(x => type == 0 || x.Type == type).ToListAsync();
+
             if (units == null)
                 return new List<UnitDto>();
 
@@ -46,18 +47,6 @@ namespace Hico.Services
                 TypeName = x.Type.ToString(),
             }).ToList();
 
-            return unitsResult;
-        }
-
-        public async Task<List<UnitDto>> GetAllUnitsWithGivenType(int unitId)
-        {
-            var allUnits = await GetAllUnits();
-            var unit = allUnits.Where(x => x.Id == unitId).FirstOrDefault();
-
-            if (unit == null)
-                return new List<UnitDto>();
-
-            var unitsResult = allUnits.Where(x => x.Type == unit.Type).ToList();
             return unitsResult;
         }
 

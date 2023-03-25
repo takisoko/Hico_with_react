@@ -83,18 +83,27 @@ namespace Hico.Services
             };
         }
 
-        public async Task<MaterialResult> UpdateMaterial(MaterialDto material)
+        public async Task<MaterialResult> UpdateMaterial(AddEditMaterialDto material)
         {
             var materialToUpdate = await GetMaterial(material.Id);
 
             var unit = await _unitService.GetUnitById(material.UnitOfIssueId);
             var previousUnit = await _unitService.GetUnitById(materialToUpdate.UnitOfUsageId);
 
-            if (previousUnit != null && unit != null && previousUnit.Type != unit.Type)
+            if (previousUnit == null || unit == null)
             {
                 return new MaterialResult()
                 {
-                    success = false
+                    success = false,
+                    Message = "Unit not found"
+                };
+            }
+            else if (previousUnit.Type != unit.Type)
+            {
+                return new MaterialResult()
+                {
+                    success = false,
+                    Message = "New unit must be of the same type"
                 };
             }
 
@@ -107,7 +116,13 @@ namespace Hico.Services
 
             return new MaterialResult()
             {
-                Material = material,
+                Material = new MaterialDto()
+                {
+                    Id = material.Id,
+                    ManufacturerCode = material.ManufacturerCode,
+                    PartNumber = material.PartNumber,
+                    Price = material.Price
+                },
                 success = success != 0 ? true : false
             };
         }
@@ -123,9 +138,9 @@ namespace Hico.Services
             };
         }
 
-        public async Task<MaterialResult> CreateMaterial(MaterialDto material)
+        public async Task<MaterialResult> CreateMaterial(AddEditMaterialDto material)
         {
-            var unit = await _unitService.GetUnitById(material.UnitOfIssue.Id);
+            var unit = await _unitService.GetUnitById(material.UnitOfIssueId);
 
             if(unit == null)
                 return new MaterialResult()
@@ -148,7 +163,13 @@ namespace Hico.Services
 
             return new MaterialResult()
             {
-                Material = material,
+                Material = new MaterialDto()
+                {
+                    Id = material.Id,
+                    ManufacturerCode =material.ManufacturerCode,
+                    PartNumber = material.PartNumber,
+                    Price = material.Price
+                },
                 success = success != 0 ? true : false
             };
         }

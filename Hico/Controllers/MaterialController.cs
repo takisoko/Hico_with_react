@@ -31,7 +31,6 @@ namespace Hico.Controllers
 
                 return NotFound();
             }
-            var possibleUnits = await _unitService.GetAllUnitsWithGivenType(result.Material.UnitOfIssueId);
 
             return Ok(result);
         }
@@ -53,11 +52,15 @@ namespace Hico.Controllers
         /// </summary>
         /// <param name="material"></param>
         /// <returns></returns>
-        [HttpPatch("{id}")]
-        public async Task<IActionResult> UpdateMaterialAsync(MaterialDto material)
+        [HttpPut]
+        public async Task<IActionResult> UpdateMaterialAsync(AddEditMaterialDto material)
         {
             var result = await _materialService.UpdateMaterial(material);
 
+            if(!result.success)
+            {
+                return BadRequest(result);
+            }
 
             return Ok(result);
         }
@@ -80,7 +83,7 @@ namespace Hico.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost()]
-        public async Task<IActionResult> CreateMaterialAsync(MaterialDto material)
+        public async Task<IActionResult> CreateMaterialAsync(AddEditMaterialDto material)
         {
             var result = await _materialService.CreateMaterial(material);
 

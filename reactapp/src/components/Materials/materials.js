@@ -55,7 +55,6 @@ export function Materials() {
     };
 
     const onDelete = (id) => {
-        console.log("id", id);
         axios
             .delete('https://localhost:7012/material/' + id)
             .then(function (response) {
@@ -75,7 +74,7 @@ export function Materials() {
     return (
         <div>           
 
-            <AddMaterialModal refreshTable={refreshTable} mode="add"/>
+            <AddMaterialModal refreshTable={refreshTable} mode="add" type={0}/>
             <h1 id="tabelLabel" >Materials</h1>
             {loading
                 ? <p><em>Loading...</em></p>
@@ -100,7 +99,7 @@ export function Materials() {
                                 <td>{material.unitOfIssue.name}</td>
                                 <td>
                                     <Button onClick={() => onDelete(material.id)}> <IconTrash width={20} /></Button>
-                                    <AddMaterialModal refreshTable={refreshTable} id={material.id} mode="edit"/>
+                                    <AddMaterialModal refreshTable={refreshTable} id={material.id} mode="edit" type={material.unitOfIssue.type}/>
                                 </td>
                             </tr>
                         )}

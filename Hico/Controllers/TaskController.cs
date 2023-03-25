@@ -52,7 +52,7 @@ namespace Hico.Controllers
         /// </summary>
         /// <param name="task"></param>
         /// <returns></returns>
-        [HttpPatch]
+        [HttpPut]
         public async Task<IActionResult> UpdateTaskAsync(TaskDto task)
         {
             var result = await _taskService.UpdateTask(task);
