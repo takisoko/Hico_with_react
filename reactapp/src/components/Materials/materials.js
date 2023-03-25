@@ -72,11 +72,10 @@ export function Materials() {
             });
     }
 
-
     return (
         <div>           
 
-            <AddMaterialModal refreshTable={refreshTable} />
+            <AddMaterialModal refreshTable={refreshTable} mode="add"/>
             <h1 id="tabelLabel" >Materials</h1>
             {loading
                 ? <p><em>Loading...</em></p>
@@ -99,7 +98,10 @@ export function Materials() {
                                 <td>{material.manufacturerCode}</td>
                                 <td>{material.price}</td>
                                 <td>{material.unitOfIssue.name}</td>
-                                <td><Button onClick={() => onDelete(material.id)}> <IconTrash width={20} /></Button></td>
+                                <td>
+                                    <Button onClick={() => onDelete(material.id)}> <IconTrash width={20} /></Button>
+                                    <AddMaterialModal refreshTable={refreshTable} id={material.id} mode="edit"/>
+                                </td>
                             </tr>
                         )}
                     </tbody>

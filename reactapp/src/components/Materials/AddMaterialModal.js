@@ -7,17 +7,18 @@ import {    FormControl, InputLabel, Select, MenuItem } from "@mui/material";
     
 
 
-export function AddMaterialModal({ refreshTable }) {
+export function AddMaterialModal({ refreshTable, id, mode }) {
     const [open, setOpen] = useState(false);
     const [units, setUnits] = useState([]);
     const [value, setValue] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [formData, setFormData] = useState({ PartNumber: 'default PartNumber', ManufacturerCode: 0, Price: 0, UnitOfIssue: { typeName: 'default type', name: 'default name' } });
+    const [formData, setFormData] = useState({ PartNumber: '', ManufacturerCode: 0, Price: 0, UnitOfIssueId: 0 });
 
     useEffect(() => {
+        console.log("useEffect open");
         fetchUnitData();
 
-    }, []);
+    }, [open]);
 
 
     const fetchUnitData = () => {
@@ -30,7 +31,6 @@ export function AddMaterialModal({ refreshTable }) {
                     (response && response.status === 201) ||
                     (response && response.status === 200)
                 ) {
-                    console.log("response", response);
                     setLoading(false);
                     setUnits(response.data);
                 }
@@ -38,6 +38,26 @@ export function AddMaterialModal({ refreshTable }) {
             .catch((e) => {
                 console.log("error", e);
             });
+
+        if (mode == 'edit') {
+            console.log("fetchMaterialData", id);
+            axios
+                .get('https://localhost:7012/material/'+ id)
+                .then(function (response) {
+                    if (
+                        (response && response.status === 201) ||
+                        (response && response.status === 200)
+                    ) {
+                        console.log("responsess", response);
+                        setFormData({ PartNumber: response.data.material.partNumber, ManufacturerCode: parseInt(response.data.material.manufacturerCode), Price: parseInt(response.data.material.price), UnitOfIssueId: parseInt(response.data.material.unitOfIssueId) })
+                    }
+                })
+                .catch((e) => {
+                    console.log("error", e);
+                });
+        }
+
+        console.log("response formData", formData);
     };
 
     const handleSelectChange = (e) => {
@@ -46,15 +66,15 @@ export function AddMaterialModal({ refreshTable }) {
     }
 
     const handleManufacturerCodeChange = (e) => {
-        setFormData({ PartNumber: formData.PartNumber, ManufacturerCode: e.target.value, Price: formData.Price, UnitOfIssueId: e.target.value })
+        setFormData({ PartNumber: formData.PartNumber, ManufacturerCode: e.target.value, Price: formData.Price, UnitOfIssueId: formData.UnitOfIssueId })
     }
 
     const handlePriceChange = (e) => {
-        setFormData({ PartNumber: formData.PartNumber, ManufacturerCode: formData.ManufacturerCode, Price: e.target.value, UnitOfIssueId: e.target.value })
+        setFormData({ PartNumber: formData.PartNumber, ManufacturerCode: formData.ManufacturerCode, Price: e.target.value, UnitOfIssueId: formData.UnitOfIssueId })
     }
 
     const handlePartNumberChange = (e) => {
-        setFormData({ PartNumber: e.target.value, ManufacturerCode: formData.ManufacturerCode, Price: formData.Price, UnitOfIssueId: e.target.value })
+        setFormData({ PartNumber: e.target.value, ManufacturerCode: formData.ManufacturerCode, Price: formData.Price, UnitOfIssueId: formData.UnitOfIssueId })
     }
 
 
@@ -69,6 +89,7 @@ export function AddMaterialModal({ refreshTable }) {
     const handleSubmit = (event) => {
         event.preventDefault();
 
+        console.log("response formData", formData);
         axios
             .post('https://localhost:7012/material', formData)
             .then(function (response) {
@@ -101,14 +122,14 @@ export function AddMaterialModal({ refreshTable }) {
                     <form onSubmit={handleSubmit}>
                         {!loading && 
                             <>
-                                <FormControl fullWidth>
-                                    <TextField label="PartNumber" fullWidth onChange={handlePartNumberChange} />
+                            <FormControl fullWidth>
+                                    <TextField label="PartNumber" value={formData.PartNumber} fullWidth onChange={handlePartNumberChange} />
+                                </FormControl>
+                            <FormControl fullWidth>
+                                    <TextField label="ManufacturerCode" value={formData.ManufacturerCode} fullWidth onChange={handleManufacturerCodeChange} />
                                 </FormControl>
                                 <FormControl fullWidth>
-                                    <TextField label="ManufacturerCode" fullWidth onChange={handleManufacturerCodeChange} />
-                                </FormControl>
-                                <FormControl fullWidth>
-                                    <TextField label="Price" fullWidth onChange={handlePriceChange} />
+                                    <TextField label="Price" fullWidth value={formData.Price} onChange={handlePriceChange} />
                                 </FormControl>
                             
                                 <FormControl fullWidth>
@@ -117,7 +138,7 @@ export function AddMaterialModal({ refreshTable }) {
                                     <Select
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
-                                        value={value || ''}
+                                        value={formData.UnitOfIssueId || ''}
                                         label="Unit types"
                                         onChange={handleSelectChange}
                                     >
