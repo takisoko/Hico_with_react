@@ -11,7 +11,7 @@ import reportWebVitals from './reportWebVitals';
 import { FetchData } from './components/FetchData';
 import { Materials } from './components/Materials/materials';
 import { Units } from './components/Units/units';
-import { Tasks } from './components/tasks';
+import { Tasks } from './components/Tasks/tasks';
 
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');

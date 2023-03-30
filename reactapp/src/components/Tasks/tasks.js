@@ -1,11 +1,22 @@
 import React, { Component, useState, useEffect } from "react";
 import axios, * as others from 'axios';
 import { useParams } from "react-router-dom";
-
+import { TaskModal } from "./TaskModal";
 
 export function Tasks() {
     const [tasks, setTasks] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [index, setIndex] = useState(0);
+
+    useEffect(() => {
+
+        fetchData();
+
+    }, [index]);
+
+    const refreshTable = () => {
+        setIndex(index + 1);
+    };
 
     useEffect(() => {
 
@@ -33,6 +44,7 @@ export function Tasks() {
 
     return (
         <div>
+            <TaskModal refreshTable={refreshTable} mode="add" type={0} />
             <h1 id="tabelLabel" >Tasks</h1>
             {loading
                 ? <p><em>Loading...</em></p>

@@ -3,7 +3,7 @@ import { Button, Modal, Box, Typography, TextField, IconButton, Divider } from '
 /*import CloseIcon from '@mui/icons-material/Close';*/
 import axios, * as others from 'axios';
 import {    FormControl, InputLabel, Select, MenuItem } from "@mui/material";
-import { IconEdit } from "@tabler/icons-react";
+import { IconEdit, IconX } from "@tabler/icons-react";
     
 
 
@@ -136,7 +136,7 @@ export function AddMaterialModal({ refreshTable, id, mode, type }) {
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <Typography variant="h6" component="h2"> {mode != "edit" ? "Add New Material" : "Edit Material"}</Typography>
                         <IconButton onClick={handleClose}>
-                            {/*<CloseIcon />*/}
+                            <IconX />
                         </IconButton>
                     </Box>
                     <Divider sx={{ my: 2 }} />

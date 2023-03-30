@@ -53,7 +53,7 @@ namespace Hico.Controllers
         /// <param name="task"></param>
         /// <returns></returns>
         [HttpPut]
-        public async Task<IActionResult> UpdateTaskAsync(TaskDto task)
+        public async Task<IActionResult> UpdateTaskAsync(AddEditTaskDto task)
         {
             var result = await _taskService.UpdateTask(task);
 
@@ -79,7 +79,7 @@ namespace Hico.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost()]
-        public async Task<IActionResult> CreateTaskAsync(TaskDto task)
+        public async Task<IActionResult> CreateTaskAsync(AddEditTaskDto task)
         {
             var result = await _taskService.CreateTask(task);
 

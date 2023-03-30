@@ -22,10 +22,10 @@ namespace Hico.Services
             _mapper = mapper;
         }
 
-        public async Task<TaskResult> CreateTask(TaskDto Task)
+        public async Task<TaskResult> CreateTask(AddEditTaskDto Task)
         {
-            var unit = await _unitService.GetUnitById(Task.TaskMaterialUsage.UnitOfMeasurement.Id);
-            var material = await _materialService.GetMaterial(Task.TaskMaterialUsage.Material.Id);
+            var unit = await _unitService.GetUnitById(Task.UnitOfMeasurementId);
+            var material = await _materialService.GetMaterial(Task.MaterialId);
 
             var TaskToCreate = new Hico.Database.Models.Task()
             {
@@ -38,7 +38,7 @@ namespace Hico.Services
 
             var taskUsage = new TaskMaterialUsage()
             {
-                Amount = Task.TaskMaterialUsage.Amount,
+                Amount = Task.Amount,
                 UnitOfMeasurement = unit,
                 Material = material
             };
@@ -50,7 +50,10 @@ namespace Hico.Services
 
             return new TaskResult()
             {
-                Task = Task,
+                Task = new TaskDto()
+                {
+                    Name = Task.Name,
+                },
                 success = success != 0 ? true : false
             };
         }
@@ -104,12 +107,12 @@ namespace Hico.Services
             };
         }
 
-        public async Task<TaskResult> UpdateTask(TaskDto Task)
+        public async Task<TaskResult> UpdateTask(AddEditTaskDto Task)
         {
             var TaskToUpdate = await GetTask(Task.Id);
 
-            var unit = await _unitService.GetUnitById(Task.TaskMaterialUsage.UnitOfMeasurement.Id);
-            var material = await _materialService.GetMaterial(Task.TaskMaterialUsage.Material.Id);
+            var unit = await _unitService.GetUnitById(Task.UnitOfMeasurementId);
+            var material = await _materialService.GetMaterial(Task.MaterialId);
             //var previousUnit = await _unitService.GetUnitById(TaskToUpdate.TaskMaterialUsage.UnitOfMeasurement.Id);
 
             if (material.UnitOfUsage != null && unit != null && material.UnitOfUsage.Type != unit.Type)
@@ -124,14 +127,17 @@ namespace Hico.Services
             TaskToUpdate.Description = Task.Description;
             TaskToUpdate.Name = Task.Name;
             TaskToUpdate.TaskMaterialUsage.UnitOfMeasurement = unit;
-            TaskToUpdate.TaskMaterialUsage.Amount = Task.TaskMaterialUsage.Amount;
+            TaskToUpdate.TaskMaterialUsage.Amount = Task.Amount;
             TaskToUpdate.TaskMaterialUsage.Material = material;
 
             var success = await _dbContext.SaveChangesAsync();
 
             return new TaskResult()
             {
-                Task = Task,
+                Task = new TaskDto()
+                {
+                    Name = Task.Name,
+                },
                 success = success != 0 ? true : false
             };
         }
