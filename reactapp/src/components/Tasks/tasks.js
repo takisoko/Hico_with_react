@@ -2,6 +2,9 @@ import React, { Component, useState, useEffect } from "react";
 import axios, * as others from 'axios';
 import { useParams } from "react-router-dom";
 import { TaskModal } from "./TaskModal";
+import { Button, Modal, Box, Typography, TextField, IconButton, Divider } from '@mui/material';
+
+import { IconTrash, IconEdit } from "@tabler/icons-react";
 
 export function Tasks() {
     const [tasks, setTasks] = useState(null);
@@ -23,6 +26,23 @@ export function Tasks() {
         fetchData();
 
     }, []);
+
+    const onDelete = (id) => {
+        axios
+            .delete('https://localhost:7012/task/' + id)
+            .then(function (response) {
+                if (
+                    (response && response.status === 201) ||
+                    (response && response.status === 200)
+                ) {
+                    setLoading(false);
+                    fetchData();
+                }
+            })
+            .catch((e) => {
+                console.log("error", e);
+            });
+    }
 
     const fetchData = () => {
         axios
@@ -57,6 +77,7 @@ export function Tasks() {
                             <th>totalDuration</th>
                             <th>amount</th>
                             <th>unitOfMeasurement name</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -67,7 +88,11 @@ export function Tasks() {
                                 <td>{ task.description }</td>
                                 <td>{ task.totalDuration }</td>
                                 <td>{ task.taskMaterialUsage.amount }</td>
-                                <td>{ task.taskMaterialUsage.unitOfMeasurement.name }</td>
+                                <td>{task.taskMaterialUsage.unitOfMeasurement.name}</td>
+                                <td>
+                                    <Button onClick={() => onDelete(task.id)}> <IconTrash width={20} /></Button>
+                                    <TaskModal refreshTable={refreshTable} id={task.id} mode="edit" type={0} />
+                                </td>
                             </tr>
                         )}
                     </tbody>

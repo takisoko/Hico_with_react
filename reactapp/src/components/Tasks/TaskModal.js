@@ -63,7 +63,17 @@ export function TaskModal({ refreshTable, id, mode, type }) {
                         (response && response.status === 201) ||
                         (response && response.status === 200)
                     ) {
-                        setFormData({ Id: id, Name: response.data.task.Name, Description: response.data.task.Description, TotalDuration: parseInt(response.data.task.TotalDuration), Amount: parseInt(response.data.task.Amount), UnitOfMeasurementId: parseInt(response.data.task.value), MaterialId: parseInt(response.data.task.MaterialId) })
+                        const m = materials.filter(m => m.id == response.data.task.taskMaterialUsage.material.id);
+                        setUnitsBasedOnMaterial(m[0]);
+
+                        setFormData({
+                            Id: id, Name: response.data.task.name,
+                            Description: response.data.task.description,
+                            TotalDuration: parseInt(response.data.task.totalDuration),
+                            Amount: parseInt(response.data.task.taskMaterialUsage.amount), UnitOfMeasurementId: 0,
+                            UnitOfMeasurementId: parseInt(response.data.task.taskMaterialUsage.unitOfMeasurement.id),
+                            MaterialId: response.data.task.taskMaterialUsage.material.id
+                        });
                     }
                 })
                 .catch((e) => {
@@ -91,17 +101,23 @@ export function TaskModal({ refreshTable, id, mode, type }) {
         setFormData({ Id: formData.Id, Name: formData.Name, Description: formData.Description, Amount: e.target.value, TotalDuration: formData.TotalDuration, UnitOfMeasurementId: formData.UnitOfMeasurementId, MaterialId: formData.MaterialId })
     }
     const handleMaterialSelectChange = (e) => {
-        const m = materials.filter(m => m.id == e.target.value)
-        const materialUnits = units.filter(u => u.type == m[0].unitOfIssue.type);
-        setUnitsUsed(materialUnits)
+        const m = materials.filter(m => m.id == e.target.value);
+
+        setUnitsBasedOnMaterial(m[0]);
         setFormData({ Id: formData.Id, Name: formData.Name, Description: formData.Description, TotalDuration: formData.TotalDuration, Amount: formData.Amount, UnitOfMeasurementId: formData.UnitOfMeasurementId, MaterialId: e.target.value })
-    }
+    };
+
+    const setUnitsBasedOnMaterial = (material) => {
+        const materialUnits = units.filter(u => u.type == material.unitOfIssue.type);
+        setUnitsUsed(materialUnits)
+    };
 
     const handleOpen = () => {
         setOpen(true);
     };
 
     const handleClose = () => {
+        setFormData({ Id: "", Name: "", Description: "", TotalDuration: 0, Amount: 0, UnitOfMeasurementId: 0, MaterialId: 0 });
         setOpen(false);
     };
 
@@ -206,6 +222,7 @@ export function TaskModal({ refreshTable, id, mode, type }) {
                                         value={formData.MaterialId || ''}
                                         label="Unit types"
                                         onChange={handleMaterialSelectChange}
+                                        readOnly={mode == "edit"}
                                     >
                                         {materials.map(material =>
                                             <MenuItem key={material.id} value={material.id}>{material.partNumber}</MenuItem>
