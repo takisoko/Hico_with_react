@@ -34,16 +34,10 @@ export default function Root() {
                             <Link to={"home"}>Home</Link>
                         </li>
                         <li>
-                            <Link to={"counter"}>Counter</Link>
-                        </li>
-                        <li>
-                            <Link to={"fetchdata"}>FetchData</Link>
+                            <Link to={"units"}>Units</Link>
                         </li>
                         <li>
                             <Link to={"materials"}>Materials</Link>
-                        </li>
-                        <li>
-                            <Link to={"units"}>Units</Link>
                         </li>
                         <li>
                             <Link to={"tasks"}>Tasks</Link>

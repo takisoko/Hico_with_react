@@ -28,14 +28,6 @@ const router = createBrowserRouter([
                 element: <Home />
             },
             {
-                path: 'counter',
-                element: <Counter />
-            },
-            {
-                path: 'fetchdata',
-                element: <FetchData />
-            },
-            {
                 path: 'materials',
                 element: <Materials />
             },
