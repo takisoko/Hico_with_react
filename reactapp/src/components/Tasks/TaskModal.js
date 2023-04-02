@@ -11,28 +11,36 @@ export function TaskModal({ refreshTable, id, mode, type, setCustomMessage, setC
     const [open, setOpen] = useState(false);
     const [units, setUnits] = useState([]);
     const [unitsUsed, setUnitsUsed] = useState([]);
+    const [unitId, setUnitId] = useState('');
     const [materials, setMaterials] = useState([]);
-    const [value, setValue] = useState(null);
     const [loading, setLoading] = useState(true);
     const [formData, setFormData] = useState({ Name: "", Description: "", TotalDuration: 0, Amount: 0, UnitOfMeasurementId: '', MaterialId: 0 });
 
     useEffect(() => {
         if (open && units.length == 0) { 
-            console.log("fetch")
             fetchUnitData();
         }
-        //if (mode == 'edit')
-        //    getEditData();
+        
 
     }, [open]);
 
     useEffect(() => {
-        console.log("units", units);
         if (units.length != 0) {
             getMaterials();
         }
 
     }, [units]);
+
+    useEffect(() => {
+        if (mode == 'edit')
+            getEditData();
+    }, [materials]);
+
+    useEffect(() => {
+        if (unitsUsed != 0)
+            setUnitId(formData.UnitOfMeasurementId)
+
+    }, [unitsUsed]);
 
     const fetchUnitData = () => {
 
@@ -43,8 +51,6 @@ export function TaskModal({ refreshTable, id, mode, type, setCustomMessage, setC
                     (response && response.status === 201) ||
                     (response && response.status === 200)
                 ) {
-                    setLoading(false);
-                    console.log("allUnits");
                     setUnits(response.data);
                 }
             })
@@ -63,7 +69,6 @@ export function TaskModal({ refreshTable, id, mode, type, setCustomMessage, setC
             ) {
                 setLoading(false);
                 setMaterials(response.data.materials);
-                getEditData();
             }
         })
         .catch((e) => {
@@ -83,9 +88,6 @@ export function TaskModal({ refreshTable, id, mode, type, setCustomMessage, setC
                         const m = materials.filter(m => m.id == response.data.task.taskMaterialUsage.material.id);
                         setUnitsBasedOnMaterial(m[0]);
 
-                        console.log("units", units);
-
-                        console.log("setFormData");
                         setFormData({
                             Id: id, Name: response.data.task.name,
                             Description: response.data.task.description,
@@ -103,38 +105,31 @@ export function TaskModal({ refreshTable, id, mode, type, setCustomMessage, setC
     }
 
     const handleSelectChange = (e) => {
-        setValue(e.target.value)
-        console.log("setFormData");
+        setUnitId(e.target.value)
         setFormData({ Id: formData.Id, Name: formData.Name, Description: formData.Description, TotalDuration: formData.TotalDuration, Amount: formData.Amount, UnitOfMeasurementId: e.target.value, MaterialId: formData.MaterialId })
     }
 
     const handleNameChange = (e) => {
-        console.log("setFormData");
         setFormData({ Id: formData.Id, Name: e.target.value, Description: formData.Description, TotalDuration: formData.TotalDuration, Amount: formData.Amount, UnitOfMeasurementId: formData.UnitOfMeasurementId, MaterialId: formData.MaterialId })
     }
     const handleDescriptionChange = (e) => {
-        console.log("setFormData");
         setFormData({ Id: formData.Id, Name: formData.Name, Description: e.target.value, TotalDuration: formData.TotalDuration, Amount: formData.Amount, UnitOfMeasurementId: formData.UnitOfMeasurementId, MaterialId: formData.MaterialId })
     }
     const handleTotalDurationChange = (e) => {
-        console.log("setFormData");
         setFormData({ Id: formData.Id, Name: formData.Name, Description: formData.Description, TotalDuration: e.target.value, Amount: formData.Amount, UnitOfMeasurementId: formData.UnitOfMeasurementId, MaterialId: formData.MaterialId })
     }
     const handleAmountChange = (e) => {
-        console.log("setFormData");
         setFormData({ Id: formData.Id, Name: formData.Name, Description: formData.Description, Amount: e.target.value, TotalDuration: formData.TotalDuration, UnitOfMeasurementId: formData.UnitOfMeasurementId, MaterialId: formData.MaterialId })
     }
     const handleMaterialSelectChange = (e) => {
         const m = materials.filter(m => m.id == e.target.value);
 
         setUnitsBasedOnMaterial(m[0]);
-        console.log("setFormData");
         setFormData({ Id: formData.Id, Name: formData.Name, Description: formData.Description, TotalDuration: formData.TotalDuration, Amount: formData.Amount, UnitOfMeasurementId: formData.UnitOfMeasurementId, MaterialId: e.target.value })
     };
 
     const setUnitsBasedOnMaterial = (material) => {
         const materialUnits = units.filter(u => u.type == material.unitOfIssue.type);
-        console.log("materialUnits", materialUnits);
         setUnitsUsed(materialUnits)
     };
 
@@ -144,8 +139,6 @@ export function TaskModal({ refreshTable, id, mode, type, setCustomMessage, setC
 
     const handleClose = () => {
 
-        console.log("handleClose");
-        console.log("setFormData");
         setFormData({ Id: "", Name: "", Description: "", TotalDuration: 0, Amount: 0, UnitOfMeasurementId: 0, MaterialId: 0 });
         setOpen(false);
     };
@@ -262,7 +255,7 @@ export function TaskModal({ refreshTable, id, mode, type, setCustomMessage, setC
                                 <Select
                                     labelId="demo-simple-select-label"
                                     id="demo-simple-select"
-                                    value={null || formData.UnitOfMeasurementId}
+                                    value={null || unitId}
                                     label="Unit types"
                                     onChange={handleSelectChange}
                                     defaultValue=""

@@ -55,7 +55,6 @@ export function Tasks() {
                     (response && response.status === 201) ||
                     (response && response.status === 200)
                 ) {
-                    console.log("tasks", response.data.tasks);
                     setLoading(false);
                     setTasks(response.data.tasks);
                 }
