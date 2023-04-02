@@ -7,14 +7,14 @@ import { IconEdit, IconX } from "@tabler/icons-react";
     
 
 
-export function TaskModal({ refreshTable, id, mode, type }) {
+export function TaskModal({ refreshTable, id, mode, type, setCustomMessage, setCustomSnackbarType }) {
     const [open, setOpen] = useState(false);
     const [units, setUnits] = useState([]);
     const [unitsUsed, setUnitsUsed] = useState([]);
     const [materials, setMaterials] = useState([]);
     const [value, setValue] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [formData, setFormData] = useState({ Id: "", Name: "", Description: "", TotalDuration: 0, Amount: 0, UnitOfMeasurementId: 0, MaterialId: 0 });
+    const [formData, setFormData] = useState({ Name: "", Description: "", TotalDuration: 0, Amount: 0, UnitOfMeasurementId: 0, MaterialId: 0 });
 
     useEffect(() => {
         if(open)
@@ -136,6 +136,9 @@ export function TaskModal({ refreshTable, id, mode, type }) {
                     ) {
                         setOpen(false);
                         refreshTable();
+
+                        setCustomSnackbarType("success")
+                        setCustomMessage("Task edited")
                     }
                     else if (response && response.status === 400) {
                         console.log(response.data.message);
@@ -147,6 +150,9 @@ export function TaskModal({ refreshTable, id, mode, type }) {
                         console.log(er.data.message);
                     }
                     console.log("error", e);
+
+                    setCustomSnackbarType("error")
+                    setCustomMessage("Error editing task")
                 });
         }
         else {
@@ -161,10 +167,14 @@ export function TaskModal({ refreshTable, id, mode, type }) {
                     ) {
                         setOpen(false);
                         refreshTable();
+                        setCustomSnackbarType("success")
+                        setCustomMessage("Task added")
                     }
                 })
                 .catch((e) => {
                     console.log("error", e);
+                    setCustomSnackbarType("error")
+                    setCustomMessage("Error adding task")
                 });
         }
     }
@@ -195,7 +205,7 @@ export function TaskModal({ refreshTable, id, mode, type }) {
                                     <TextField label="TotalDuration" value={formData.TotalDuration} fullWidth onChange={handleTotalDurationChange} />
                                 </FormControl>
                                 <FormControl fullWidth>
-                                    <TextField label="TotalDuration" value={formData.Amount} fullWidth onChange={handleAmountChange} />
+                                    <TextField label="Amount" value={formData.Amount} fullWidth onChange={handleAmountChange} />
                                 </FormControl>
                             
                                 <FormControl fullWidth>

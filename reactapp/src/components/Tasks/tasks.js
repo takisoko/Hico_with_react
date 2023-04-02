@@ -2,6 +2,7 @@ import React, { Component, useState, useEffect } from "react";
 import axios, * as others from 'axios';
 import { useParams } from "react-router-dom";
 import { TaskModal } from "./TaskModal";
+import { CustomSnackbar } from "../Snackbar";
 import { Button, Modal, Box, Typography, TextField, IconButton, Divider } from '@mui/material';
 
 import { IconTrash, IconEdit } from "@tabler/icons-react";
@@ -10,6 +11,8 @@ export function Tasks() {
     const [tasks, setTasks] = useState(null);
     const [loading, setLoading] = useState(true);
     const [index, setIndex] = useState(0);
+    const [message, setMessage] = useState("");
+    const [snackbarType, setSnackbarType] = useState("");
 
     useEffect(() => {
 
@@ -62,9 +65,18 @@ export function Tasks() {
             });
     };
 
+    const setCustomMessage = (message) => {
+        setMessage(message)
+    }
+
+    const setCustomSnackbarType = (type) => {
+        setSnackbarType(type)
+    }
+
     return (
         <div>
-            <TaskModal refreshTable={refreshTable} mode="add" type={0} />
+            <CustomSnackbar type={snackbarType} message={message} />
+            <TaskModal refreshTable={refreshTable} mode="add" type={0} setCustomMessage={setCustomMessage} setCustomSnackbarType={setCustomSnackbarType} />
             <h1 id="tabelLabel" >Tasks</h1>
             {loading
                 ? <p><em>Loading...</em></p>
@@ -91,7 +103,7 @@ export function Tasks() {
                                 <td>{task.taskMaterialUsage.unitOfMeasurement.name}</td>
                                 <td>
                                     <Button onClick={() => onDelete(task.id)}> <IconTrash width={20} /></Button>
-                                    <TaskModal refreshTable={refreshTable} id={task.id} mode="edit" type={0} />
+                                    <TaskModal refreshTable={refreshTable} id={task.id} mode="edit" type={0} setCustomMessage={setCustomMessage} setCustomSnackbarType={setCustomSnackbarType} />
                                 </td>
                             </tr>
                         )}

@@ -7,7 +7,7 @@ import { IconEdit, IconX } from "@tabler/icons-react";
     
 
 
-export function AddMaterialModal({ refreshTable, id, mode, type }) {
+export function AddMaterialModal({ refreshTable, id, mode, type, setCustomMessage, setCustomSnackbarType }) {
     const [open, setOpen] = useState(false);
     const [units, setUnits] = useState([]);
     const [value, setValue] = useState(null);
@@ -97,6 +97,9 @@ export function AddMaterialModal({ refreshTable, id, mode, type }) {
                     ) {
                         setOpen(false);
                         refreshTable();
+                        setCustomSnackbarType("success")
+                        setCustomMessage("Edited material")
+                        console.log("success");
                     }
                     else if (response && response.status === 400) {
                         console.log(response.data.message);
@@ -108,6 +111,8 @@ export function AddMaterialModal({ refreshTable, id, mode, type }) {
                         console.log(er.data.message);
                     }
                     console.log("error", e);
+                    setCustomSnackbarType("error")
+                    setCustomMessage("Error editing material")
                 });
         }
         else {
@@ -120,10 +125,14 @@ export function AddMaterialModal({ refreshTable, id, mode, type }) {
                     ) {
                         setOpen(false);
                         refreshTable();
+                        setCustomSnackbarType("success")
+                        setCustomMessage("Added a material")
                     }
                 })
                 .catch((e) => {
                     console.log("error", e);
+                    setCustomSnackbarType("error")
+                    setCustomMessage("Error adding material")
                 });
         }
     }

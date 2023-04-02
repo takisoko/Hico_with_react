@@ -2,6 +2,7 @@ import React, { Component, useState, useEffect } from "react";
 import axios, * as others from 'axios';
 import { useParams } from "react-router-dom";
 import { UnitModal } from "./Modal";
+import { CustomSnackbar } from "../Snackbar";
 import { IconTrash, IconEdit } from "@tabler/icons-react";
 import {
     Autocomplete,
@@ -15,6 +16,8 @@ export function Units() {
     const [loading, setLoading] = useState(true);
     const [value, setValue] = useState(null);
     const [index, setIndex] = useState(0);
+    const [message, setMessage] = useState("");
+    const [snackbarType, setSnackbarType] = useState("");
 
     useEffect(() => {
 
@@ -60,9 +63,18 @@ export function Units() {
             });
     };
 
+    const setCustomMessage = (message) => {
+        setMessage(message)
+    }
+
+    const setCustomSnackbarType = (type) => {
+        setSnackbarType(type)
+    }
+
     return (
         <div>
-            <UnitModal refreshTable={refreshTable }/>
+            <CustomSnackbar type={snackbarType} message={message} />
+            <UnitModal refreshTable={refreshTable} setCustomMessage={setCustomMessage} setCustomSnackbarType={setCustomSnackbarType } />
             <h1 id="tabelLabel" >Units</h1>
             {loading
                 ? <p><em>Loading...</em></p>

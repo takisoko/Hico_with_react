@@ -8,7 +8,7 @@ import {    FormControl, InputLabel, Select, MenuItem } from "@mui/material";
     
 
 
-export function UnitModal({ refreshTable }) {
+export function UnitModal({ refreshTable, setCustomMessage, setCustomSnackbarType }) {
     const [open, setOpen] = useState(false);
     const [unitTypes, setUnitTypes] = useState([]);
     const [value, setValue] = useState(null);
@@ -53,6 +53,7 @@ export function UnitModal({ refreshTable }) {
 
     const handleClose = () => {
         setOpen(false);
+        setFormData({ typeName: '', name: '' });
     };
 
     const handleSubmit = (event) => {
@@ -67,6 +68,8 @@ export function UnitModal({ refreshTable }) {
                 ) {
                     setOpen(false);
                     refreshTable();
+                    setCustomSnackbarType("success")
+                    setCustomMessage("Unit added")
                 }
             })
             .catch((e) => {
@@ -110,11 +113,10 @@ export function UnitModal({ refreshTable }) {
                                     </Select>
                                 </FormControl>
                             </>}
-                        <input type="submit" value="Submit" />
-                    </form>
-                    <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
-                        <Button variant="contained" >Save</Button>
-                    </Box>
+                        <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
+                            <input type="submit" value="Submit" />
+                        </Box>
+                    </form>                    
                 </Box>
             </Modal>
       

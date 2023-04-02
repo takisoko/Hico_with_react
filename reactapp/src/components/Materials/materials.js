@@ -1,6 +1,7 @@
 import React, { Component, useState, useEffect } from "react";
 import axios, * as others from 'axios';
 import { useParams } from "react-router-dom";
+import { CustomSnackbar } from "../Snackbar";
 import { Button, Modal, Box, Typography, TextField, IconButton, Divider } from '@mui/material';
 /*import CloseIcon from '@mui/icons-material/Close';*/
 
@@ -13,6 +14,8 @@ export function Materials() {
     const [loading, setLoading] = useState(true);
     const [open, setOpen] = useState(false);
     const [index, setIndex] = useState(0);
+    const [message, setMessage] = useState("");
+    const [snackbarType, setSnackbarType] = useState("");
 
     useEffect(() => {
 
@@ -68,13 +71,25 @@ export function Materials() {
             })
             .catch((e) => {
                 console.log("error", e);
+                setCustomSnackbarType("error")
+                setCustomMessage("Error deleting material")
             });
+    }
+
+
+    const setCustomMessage = (message) => {
+        setMessage(message)
+    }
+
+    const setCustomSnackbarType = (type) => {
+        setSnackbarType(type)
     }
 
     return (
         <div>           
 
-            <AddMaterialModal refreshTable={refreshTable} mode="add" type={0}/>
+            <CustomSnackbar type={snackbarType} message={message} />
+            <AddMaterialModal refreshTable={refreshTable} mode="add" type={0} setCustomMessage={setCustomMessage} setCustomSnackbarType={setCustomSnackbarType} />
             <h1 id="tabelLabel" >Materials</h1>
             {loading
                 ? <p><em>Loading...</em></p>
@@ -99,7 +114,7 @@ export function Materials() {
                                 <td>{material.unitOfIssue.name}</td>
                                 <td>
                                     <Button onClick={() => onDelete(material.id)}> <IconTrash width={20} /></Button>
-                                    <AddMaterialModal refreshTable={refreshTable} id={material.id} mode="edit" type={material.unitOfIssue.type}/>
+                                    <AddMaterialModal refreshTable={refreshTable} id={material.id} mode="edit" type={material.unitOfIssue.type} setCustomMessage={setCustomMessage} setCustomSnackbarType={setCustomSnackbarType} />
                                 </td>
                             </tr>
                         )}
