@@ -97,8 +97,8 @@ export function UnitModal({ refreshTable, setCustomMessage, setCustomSnackbarTyp
                     <form onSubmit={handleSubmit}>
                         {!loading && 
                             <>
-                                <FormControl fullWidth>
-                                    <TextField label="Name" fullWidth onChange={handleNameChange} />
+                            <FormControl fullWidth>
+                                <TextField label="Name" fullWidth onChange={handleNameChange} />
                                 </FormControl>
                             
                                 <FormControl fullWidth>

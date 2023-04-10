@@ -232,10 +232,10 @@ export function TaskModal({ refreshTable, id, mode, type, setCustomMessage, setC
                                         <TextField label="Description" value={formData.Description} fullWidth onChange={handleDescriptionChange} />
                                     </FormControl>
                                 <FormControl fullWidth>
-                                    <TextField label="TotalDuration" value={formData.TotalDuration} fullWidth onChange={handleTotalDurationChange} />
+                                    <TextField label="TotalDuration" value={formData.TotalDuration} fullWidth onChange={handleTotalDurationChange} type="number"/>
                                 </FormControl>
                                 <FormControl fullWidth>
-                                    <TextField label="Amount" value={formData.Amount} fullWidth onChange={handleAmountChange} />
+                                    <TextField label="Amount" value={formData.Amount} fullWidth onChange={handleAmountChange} type="number" />
                                 </FormControl>
                             {materials && <FormControl fullWidth>
 

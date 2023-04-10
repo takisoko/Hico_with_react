@@ -2,12 +2,14 @@ import React, { Component, useState, useEffect } from "react";
 import axios, * as others from 'axios';
 import { useParams } from "react-router-dom";
 import { UnitModal } from "./Modal";
+import { DeleteModal } from "../DeleteModal";
 import { CustomSnackbar } from "../Snackbar";
 import { IconTrash, IconEdit } from "@tabler/icons-react";
 import {
     Autocomplete,
     FormControl, InputLabel, Select, MenuItem, Button
 } from "@mui/material";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
 
 
@@ -83,28 +85,30 @@ export function Units() {
             {loading
                 ? <p><em>Loading...</em></p>
                 :
-                <>
-                    <table className='table table-striped' aria-labelledby="tabelLabel">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Name</th>
-                            <th>Type</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {units.map(unit =>
-                            <tr key={unit.id}>
-                                <td>{ unit.id }</td>
-                                <td>{ unit.name }</td>
-                                <td>{unit.typeName}</td>
-                                <td><Button onClick={() => onDelete(unit.id)}> <IconTrash width={20} /></Button></td>
-                            </tr>
-                        )}
-                    </tbody>
-                    </table>
-                </>
+                <TableContainer component={Paper}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell >Id</TableCell>
+                                <TableCell align="left">Name</TableCell>
+                                <TableCell align="right">Type</TableCell>
+                                <TableCell align="right">Actions</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {units.map(unit =>
+                                <TableRow key={unit.id}>
+                                    <TableCell >{unit.id}</TableCell>
+                                    <TableCell align="left">{unit.name}</TableCell>
+                                    <TableCell align="right">{unit.typeName}</TableCell>
+                                    <TableCell align="right">
+                                        <DeleteModal id={unit.id} type="Unit" DeleteData={onDelete} name={unit.name} />
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
             }
         </div>
     )

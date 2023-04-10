@@ -4,8 +4,10 @@ import { useParams } from "react-router-dom";
 import { TaskModal } from "./TaskModal";
 import { CustomSnackbar } from "../Snackbar";
 import { Button, Modal, Box, Typography, TextField, IconButton, Divider } from '@mui/material';
+import { DeleteModal } from "../DeleteModal";
 
 import { IconTrash, IconEdit } from "@tabler/icons-react";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
 export function Tasks() {
     const [tasks, setTasks] = useState(null);
@@ -80,38 +82,42 @@ export function Tasks() {
         <div>
             <CustomSnackbar type={snackbarType} message={message} />
             <TaskModal refreshTable={refreshTable} mode="add" type={0} setCustomMessage={setCustomMessage} setCustomSnackbarType={setCustomSnackbarType} />
+
+            
             <h1 id="tabelLabel" >Tasks</h1>
             {loading
                 ? <p><em>Loading...</em></p>
-                : <table className='table table-striped' aria-labelledby="tabelLabel">
+                : <TableContainer component={Paper}>
+                    <Table >
                     <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Name</th>
-                            <th>description</th>
-                            <th>totalDuration</th>
-                            <th>amount</th>
-                            <th>unitOfMeasurement name</th>
-                            <th>Actions</th>
-                        </tr>
+                        <TableRow>
+                            <TableCell align="left">Id</TableCell>
+                            <TableCell align="left">Name</TableCell>
+                            <TableCell align="right">description</TableCell>
+                            <TableCell align="right">totalDuration</TableCell>
+                            <TableCell align="right">amount</TableCell>
+                            <TableCell align="right">unitOfMeasurement name</TableCell>
+                            <TableCell align="right">Actions</TableCell>
+                        </TableRow>
                     </thead>
-                    <tbody>
+                    <TableBody>
                         {tasks.map(task =>
-                            <tr key={task.id}>
-                                <td>{ task.id }</td>
-                                <td>{ task.name }</td>
-                                <td>{ task.description }</td>
-                                <td>{ task.totalDuration }</td>
-                                <td>{ task.taskMaterialUsage.amount }</td>
-                                <td>{task.taskMaterialUsage.unitOfMeasurement.name}</td>
-                                <td>
-                                    <Button onClick={() => onDelete(task.id)}> <IconTrash width={20} /></Button>
+                            <TableRow key={task.id}>
+                                <TableCell align="left">{ task.id }</TableCell>
+                                <TableCell align="left">{ task.name }</TableCell>
+                                <TableCell align="right">{ task.description }</TableCell>
+                                <TableCell align="right">{ task.totalDuration }</TableCell>
+                                <TableCell align="right">{ task.taskMaterialUsage.amount }</TableCell>
+                                <TableCell align="right">{task.taskMaterialUsage.unitOfMeasurement.name}</TableCell>
+                                <TableCell align="right" style={{ display: "flex" }}>
+                                    <DeleteModal id={task.id} type="Task" DeleteData={onDelete} name={task.name} />
                                     <TaskModal refreshTable={refreshTable} id={task.id} mode="edit" type={0} setCustomMessage={setCustomMessage} setCustomSnackbarType={setCustomSnackbarType} />
-                                </td>
-                            </tr>
+                                </TableCell>
+                            </TableRow>
                         )}
-                    </tbody>
-                </table>}
+                    </TableBody>
+                    </Table>
+                </TableContainer>}
         </div>
     )
 

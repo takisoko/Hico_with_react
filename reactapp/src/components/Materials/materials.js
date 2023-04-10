@@ -4,9 +4,11 @@ import { useParams } from "react-router-dom";
 import { CustomSnackbar } from "../Snackbar";
 import { Button, Modal, Box, Typography, TextField, IconButton, Divider } from '@mui/material';
 /*import CloseIcon from '@mui/icons-material/Close';*/
+import { DeleteModal } from "../DeleteModal";
 
 import { IconTrash, IconEdit } from "@tabler/icons-react";
 import { AddMaterialModal } from "./AddMaterialModal";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
 
 export function Materials() {
@@ -95,33 +97,35 @@ export function Materials() {
             <h1 id="tabelLabel" >Materials</h1>
             {loading
                 ? <p><em>Loading...</em></p>
-                : <table className='table table-striped' aria-labelledby="tabelLabel">
+                : <TableContainer component={Paper}>
+                    <Table>
                     <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Part Number</th>
-                            <th>Manufacturer code</th>
-                            <th>Price</th>
-                            <th>Unit</th>
-                            <th>Actions</th>
-                        </tr>
+                        <TableRow>
+                            <TableCell align="left">Id</TableCell>
+                            <TableCell align="left">Part Number</TableCell>
+                            <TableCell>Manufacturer code</TableCell>
+                            <TableCell>Price</TableCell>
+                            <TableCell>Unit</TableCell>
+                            <TableCell>Actions</TableCell>
+                        </TableRow>
                     </thead>
-                    <tbody>
+                    <TableBody>
                         {materials.map(material =>
-                            <tr key={material.id}>
-                                <td>{material.id}</td>
-                                <td>{material.partNumber}</td>
-                                <td>{material.manufacturerCode}</td>
-                                <td>{material.price}</td>
-                                <td>{material.unitOfIssue.name}</td>
-                                <td>
-                                    <Button onClick={() => onDelete(material.id)}> <IconTrash width={20} /></Button>
+                            <TableRow key={material.id}>
+                                <TableCell align="left">{material.id}</TableCell>
+                                <TableCell align="left">{material.partNumber}</TableCell>
+                                <TableCell>{material.manufacturerCode}</TableCell>
+                                <TableCell>{material.price}</TableCell>
+                                <TableCell>{material.unitOfIssue.name}</TableCell>
+                                <TableCell style={{ display: "flex" }}>                                    
                                     <AddMaterialModal refreshTable={refreshTable} id={material.id} mode="edit" type={material.unitOfIssue.type} setCustomMessage={setCustomMessage} setCustomSnackbarType={setCustomSnackbarType} />
-                                </td>
-                            </tr>
+                                    <DeleteModal id={material.id} type="Material" DeleteData={onDelete} name={material.partNumber} />
+                                </TableCell>
+                            </TableRow>
                         )}
-                    </tbody>
-                </table>}
+                    </TableBody>
+                    </Table>
+                </TableContainer>}
         </div>
     )
 
