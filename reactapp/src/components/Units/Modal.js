@@ -35,6 +35,8 @@ export function UnitModal({ refreshTable, setCustomMessage, setCustomSnackbarTyp
             })
             .catch((e) => {
                 console.log("error", e);
+                setCustomSnackbarType("error")
+                setCustomMessage("Error loading unit types")
             });
     };
 
@@ -74,6 +76,8 @@ export function UnitModal({ refreshTable, setCustomMessage, setCustomSnackbarTyp
             })
             .catch((e) => {
                 console.log("error", e);
+                setCustomSnackbarType("error")
+                setCustomMessage("Error submiting unit data")
             });
     }
 

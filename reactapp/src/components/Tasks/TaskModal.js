@@ -56,6 +56,8 @@ export function TaskModal({ refreshTable, id, mode, type, setCustomMessage, setC
             })
             .catch((e) => {
                 console.log("error", e);
+                setCustomSnackbarType("error")
+                setCustomMessage("Error loading unit types")
             });
     };
 
@@ -73,6 +75,8 @@ export function TaskModal({ refreshTable, id, mode, type, setCustomMessage, setC
         })
         .catch((e) => {
             console.log("error", e);
+            setCustomSnackbarType("error")
+            setCustomMessage("Error loading materials")
         });
     }
 
@@ -100,6 +104,8 @@ export function TaskModal({ refreshTable, id, mode, type, setCustomMessage, setC
                 })
                 .catch((e) => {
                     console.log("error", e);
+                    setCustomSnackbarType("error")
+                    setCustomMessage("Error loading task")
                 });
         }
     }

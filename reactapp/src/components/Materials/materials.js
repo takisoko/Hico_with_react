@@ -54,6 +54,8 @@ export function Materials() {
             })
             .catch((e) => {
                 console.log("error", e);
+                setCustomSnackbarType("error")
+                setCustomMessage("Error loading materials")
             });
     };
 

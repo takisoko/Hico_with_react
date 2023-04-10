@@ -36,6 +36,8 @@ export function AddMaterialModal({ refreshTable, id, mode, type, setCustomMessag
             })
             .catch((e) => {
                 console.log("error", e);
+                setCustomSnackbarType("error")
+                setCustomMessage("Error loading unit types")
             });
 
         if (mode == 'edit') {
@@ -51,6 +53,8 @@ export function AddMaterialModal({ refreshTable, id, mode, type, setCustomMessag
                 })
                 .catch((e) => {
                     console.log("error", e);
+                    setCustomSnackbarType("error")
+                    setCustomMessage("Error loading material")
                 });
         }
 
@@ -157,10 +161,10 @@ export function AddMaterialModal({ refreshTable, id, mode, type, setCustomMessag
                                     <TextField label="PartNumber" value={formData.PartNumber} fullWidth onChange={handlePartNumberChange} />
                                 </FormControl>
                             <FormControl fullWidth>
-                                    <TextField label="ManufacturerCode" value={formData.ManufacturerCode} fullWidth onChange={handleManufacturerCodeChange} />
+                                    <TextField label="ManufacturerCode" value={formData.ManufacturerCode} fullWidth onChange={handleManufacturerCodeChange}  type="number"/>
                                 </FormControl>
                                 <FormControl fullWidth>
-                                    <TextField label="Price" fullWidth value={formData.Price} onChange={handlePriceChange} />
+                                    <TextField label="Price" fullWidth value={formData.Price} onChange={handlePriceChange}  type="number"/>
                                 </FormControl>
                             
                                 <FormControl fullWidth>

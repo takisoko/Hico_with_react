@@ -43,6 +43,8 @@ export function Units() {
             })
             .catch((e) => {
                 console.log("error", e);
+                setCustomSnackbarType("error")
+                setCustomMessage("Error loading units")
             });
     }
 
@@ -60,6 +62,8 @@ export function Units() {
             })
             .catch((e) => {
                 console.log("error", e);
+                setCustomSnackbarType("error")
+                setCustomMessage("Error deleting unit")
             });
     };
 

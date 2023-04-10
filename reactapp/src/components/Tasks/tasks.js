@@ -44,6 +44,8 @@ export function Tasks() {
             })
             .catch((e) => {
                 console.log("error", e);
+                setCustomSnackbarType("error")
+                setCustomMessage("Error loading tasks")
             });
     }
 
@@ -61,6 +63,8 @@ export function Tasks() {
             })
             .catch((e) => {
                 console.log("error", e);
+                setCustomSnackbarType("error")
+                setCustomMessage("Error deleting tasks")
             });
     };
 
