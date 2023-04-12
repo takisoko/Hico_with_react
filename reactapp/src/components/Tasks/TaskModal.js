@@ -19,10 +19,13 @@ export function TaskModal({ refreshTable, id, mode, type, setCustomMessage, setC
     const [inactiveMaterial, setInactiveMaterial] = useState({ Id: 0, active: true, name: "" });
 
     useEffect(() => {
-        if (open && units.length == 0) { 
+        if (!open)
+            return
+        if (units.length == 0) { 
             fetchUnitData();
         }
-        
+        else if(mode == 'edit')
+            getEditData();
 
     }, [open]);
 
