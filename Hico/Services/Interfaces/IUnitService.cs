@@ -9,6 +9,8 @@ namespace Hico.Services.Interfaces
         Task<Unit> GetUnitById(int id);
         List<string> GetUnitTypes();
         Task<List<UnitDto>> GetAllUnits(UnitTypeEnum? type);
+        Task<List<UnitDto>> GetActiveUnits(UnitTypeEnum? type);
         Task<bool> DeleteUnit(int id);
+        Task<bool> ToggleActiveUnit(int id);
     }
 }

@@ -23,8 +23,8 @@ namespace Hico.Services
             var unitToCreate = new Unit()
             {
                 Name = unit.Name,
-                Type = typeByName
-
+                Type = typeByName,
+                Active = true,
             };
             _dbContext.Add(unitToCreate);
             var success = await _dbContext.SaveChangesAsync();
@@ -45,6 +45,26 @@ namespace Hico.Services
                 Name = x.Name,
                 Type = x.Type,
                 TypeName = x.Type.ToString(),
+                Active = x.Active,
+            }).ToList();
+
+            return unitsResult;
+        }
+
+        public async Task<List<UnitDto>> GetActiveUnits(UnitTypeEnum? type)
+        {
+            var units = await _dbContext.Units.Where(x => x.Active && (type == 0 || x.Type == type)).ToListAsync();
+
+            if (units == null)
+                return new List<UnitDto>();
+
+            var unitsResult = units.Select(x => new UnitDto()
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Type = x.Type,
+                TypeName = x.Type.ToString(),
+                Active = x.Active,
             }).ToList();
 
             return unitsResult;
@@ -61,6 +81,8 @@ namespace Hico.Services
             var unitTypes = new List<string>();
             unitTypes.Add(UnitTypeEnum.Volume.ToString());
             unitTypes.Add(UnitTypeEnum.Length.ToString());
+            unitTypes.Add(UnitTypeEnum.Mass.ToString());
+            unitTypes.Add(UnitTypeEnum.Package.ToString());
 
             return unitTypes;
         }
@@ -75,6 +97,14 @@ namespace Hico.Services
             {
                 return UnitTypeEnum.Volume;
             }
+            else if (typeName == UnitTypeEnum.Mass.ToString())
+            {
+                return UnitTypeEnum.Mass;
+            }
+            else if (typeName == UnitTypeEnum.Package.ToString())
+            {
+                return UnitTypeEnum.Package;
+            }
 
             return 0;
         }
@@ -83,6 +113,15 @@ namespace Hico.Services
         {
             var unitToDelete = await GetUnitById(id);
             _dbContext.Remove(unitToDelete);
+            var success = await _dbContext.SaveChangesAsync();
+            return success != 0 ? true : false;
+        }
+
+
+        public async Task<bool> ToggleActiveUnit(int id)
+        {
+            var materialToInactivate = await GetUnitById(id);
+            materialToInactivate.Active = !materialToInactivate.Active;
             var success = await _dbContext.SaveChangesAsync();
             return success != 0 ? true : false;
         }

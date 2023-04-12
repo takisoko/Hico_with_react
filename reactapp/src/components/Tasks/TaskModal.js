@@ -15,6 +15,8 @@ export function TaskModal({ refreshTable, id, mode, type, setCustomMessage, setC
     const [materials, setMaterials] = useState([]);
     const [loading, setLoading] = useState(true);
     const [formData, setFormData] = useState({ Name: "", Description: "", TotalDuration: 0, Amount: 0, UnitOfMeasurementId: '', MaterialId: 0 });
+    const [inactiveUnit, setInactiveUnit] = useState({ unitId: 0, active: true, name: "" });
+    const [inactiveMaterial, setInactiveMaterial] = useState({ Id: 0, active: true, name: "" });
 
     useEffect(() => {
         if (open && units.length == 0) { 
@@ -45,7 +47,7 @@ export function TaskModal({ refreshTable, id, mode, type, setCustomMessage, setC
     const fetchUnitData = () => {
 
         axios
-            .get('https://localhost:7012/unit/allUnits/' + type)
+            .get('https://localhost:7012/unit/activeUnits/' + type)
             .then(function (response) {
                 if (
                     (response && response.status === 201) ||
@@ -100,6 +102,9 @@ export function TaskModal({ refreshTable, id, mode, type, setCustomMessage, setC
                             UnitOfMeasurementId: parseInt(response.data.task.taskMaterialUsage.unitOfMeasurement.id),
                             MaterialId: response.data.task.taskMaterialUsage.material.id
                         });
+
+                        setInactiveUnit({ unitId: parseInt(response.data.task.taskMaterialUsage.unitOfMeasurement.id), name: response.data.task.taskMaterialUsage.unitOfMeasurement.name, active: response.data.task.taskMaterialUsage.unitOfMeasurement.active })
+                        setInactiveMaterial({ unitId: parseInt(response.data.task.taskMaterialUsage.material.id), name: response.data.task.taskMaterialUsage.material.partNumber, active: response.data.task.taskMaterialUsage.material.active })
                     }
                 })
                 .catch((e) => {
@@ -249,6 +254,7 @@ export function TaskModal({ refreshTable, id, mode, type, setCustomMessage, setC
                                     readOnly={mode == "edit"}
                                     defaultValue=""
                                 >
+                                    {!inactiveMaterial.active && <MenuItem key={inactiveMaterial.Id} disabled={true} value={inactiveMaterial.Id}>{inactiveMaterial.name}</MenuItem>}
                                     {materials.map(material =>
                                         <MenuItem key={material.id} value={material.id}>{material.partNumber}</MenuItem>
                                     )}
@@ -266,6 +272,7 @@ export function TaskModal({ refreshTable, id, mode, type, setCustomMessage, setC
                                     onChange={handleSelectChange}
                                     defaultValue=""
                                 >
+                                    {!inactiveUnit.active && <MenuItem key={inactiveUnit.unitId} disabled={true} value={inactiveUnit.unitId}>{inactiveUnit.name}</MenuItem>}
                                     {unitsUsed.map(unit =>
                                         <MenuItem key={unit.id} value={unit.id}>{unit.name}</MenuItem>
                                     )}

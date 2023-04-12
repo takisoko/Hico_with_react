@@ -7,11 +7,12 @@ import { IconEdit, IconX } from "@tabler/icons-react";
     
 
 
-export function AddMaterialModal({ refreshTable, id, mode, type, setCustomMessage, setCustomSnackbarType }) {
+export function AddMaterialModal({ refreshTable, id, mode, type, setCustomMessage, setCustomSnackbarType, active }) {
     const [open, setOpen] = useState(false);
     const [units, setUnits] = useState([]);
     const [value, setValue] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [inactiveUnit, setInactiveUnit] = useState({unitId: 0, active: true, name: ""});
     const [formData, setFormData] = useState({ Id: id, PartNumber: '', ManufacturerCode: 0, Price: 0, UnitOfIssueId: 0 });
 
     useEffect(() => {
@@ -24,7 +25,7 @@ export function AddMaterialModal({ refreshTable, id, mode, type, setCustomMessag
     const fetchUnitData = () => {
 
         axios
-            .get('https://localhost:7012/unit/allUnits/' + type)
+            .get('https://localhost:7012/unit/activeUnits/' + type)
             .then(function (response) {
                 if (
                     (response && response.status === 201) ||
@@ -49,6 +50,7 @@ export function AddMaterialModal({ refreshTable, id, mode, type, setCustomMessag
                         (response && response.status === 200)
                     ) {
                         setFormData({ Id: id, PartNumber: response.data.material.partNumber, ManufacturerCode: parseInt(response.data.material.manufacturerCode), Price: parseInt(response.data.material.price), UnitOfIssueId: parseInt(response.data.material.unitOfIssueId) })
+                        setInactiveUnit({ unitId: parseInt(response.data.material.unitOfIssueId), name: response.data.material.unitOfIssue.name, active: response.data.material.unitOfIssue.active })
                     }
                 })
                 .catch((e) => {
@@ -176,9 +178,10 @@ export function AddMaterialModal({ refreshTable, id, mode, type, setCustomMessag
                                         value={formData.UnitOfIssueId || ''}
                                         label="Unit types"
                                         onChange={handleSelectChange}
-                                    >
-                                        {units.map(unit =>
-                                            <MenuItem key={unit.id} value={unit.id}>{unit.name}</MenuItem>
+                                >
+                                    {!inactiveUnit.active && <MenuItem key={inactiveUnit.unitId} disabled={true} value={inactiveUnit.unitId}>{inactiveUnit.name}</MenuItem>}
+                                    {units.map(unit =>
+                                        <MenuItem key={unit.id} value={unit.id}>{unit.name}</MenuItem>
                                         )}
                                     </Select>
                                 </FormControl>

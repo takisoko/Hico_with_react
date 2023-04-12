@@ -8,5 +8,6 @@ namespace Hico.Models
         public string Name { get; set; }
         public UnitTypeEnum Type { get; set; }
         public string TypeName { get; set; }
+        public bool Active { get; set; }
     }
 }

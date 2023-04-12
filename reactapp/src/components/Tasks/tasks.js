@@ -42,6 +42,8 @@ export function Tasks() {
                 ) {
                     setLoading(false);
                     fetchData();
+                    setCustomSnackbarType("success")
+                    setCustomMessage("Successfully deleted task")
                 }
             })
             .catch((e) => {
@@ -97,6 +99,7 @@ export function Tasks() {
                             <TableCell align="right">totalDuration</TableCell>
                             <TableCell align="right">amount</TableCell>
                             <TableCell align="right">unitOfMeasurement name</TableCell>
+                            <TableCell align="right">Material</TableCell>
                             <TableCell align="right">Actions</TableCell>
                         </TableRow>
                     </thead>
@@ -109,6 +112,7 @@ export function Tasks() {
                                 <TableCell align="right">{ task.totalDuration }</TableCell>
                                 <TableCell align="right">{ task.taskMaterialUsage.amount }</TableCell>
                                 <TableCell align="right">{task.taskMaterialUsage.unitOfMeasurement.name}</TableCell>
+                                <TableCell align="right">{task.taskMaterialUsage.material.partNumber}</TableCell>
                                 <TableCell align="right" style={{ display: "flex" }}>
                                     <DeleteModal id={task.id} type="Task" DeleteData={onDelete} name={task.name} />
                                     <TaskModal refreshTable={refreshTable} id={task.id} mode="edit" type={0} setCustomMessage={setCustomMessage} setCustomSnackbarType={setCustomSnackbarType} />

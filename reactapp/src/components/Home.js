@@ -16,7 +16,8 @@ export class Home extends Component {
                 <ul>
                   <li>Improve the UI (either hire a designer, use a theme...)</li>
                   <li>Add authorization and users</li>
-                  <li></li>
+                  <li>Have an admin part with user management, actual delete of materials, units etc.</li>
+                  <li>Change Unit type from enum to a table and allow the admin to add/remove them</li>
                 </ul>
                 <p></p>
             </div>

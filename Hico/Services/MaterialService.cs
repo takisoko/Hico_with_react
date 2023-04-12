@@ -41,7 +41,13 @@ namespace Hico.Services
                 ManufacturerCode = material.ManufacturerCode,
                 PartNumber = material.PartNumber,
                 Price = material.Price,
-                UnitOfIssueId = material.UnitOfUsageId
+                UnitOfIssueId = material.UnitOfUsageId,
+                UnitOfIssue = new UnitDto()
+                {
+                    Active = material.UnitOfUsage.Active,
+                    Name = material.UnitOfUsage.Name,
+                    Id = material.UnitOfUsage.Id,
+                }
             };
             return new MaterialResult()
             {
@@ -50,10 +56,16 @@ namespace Hico.Services
             };
         }
 
+        private IQueryable<Material> GetQuery()
+        {
+            var materials = _dbContext.Materials.Include(x => x.UnitOfUsage);
+
+            return materials;
+        }
 
         public async Task<MaterialsListResult> GetAllMaterials()
         {
-            var materials = await _dbContext.Materials.Include(x => x.UnitOfUsage).ToListAsync();
+            var materials = await GetQuery().ToListAsync();
             if (materials == null)
                 return new MaterialsListResult()
                 {
@@ -67,6 +79,7 @@ namespace Hico.Services
                 ManufacturerCode = x.ManufacturerCode,
                 PartNumber = x.PartNumber,
                 Price = x.Price,
+                Active = x.Active,
                 UnitOfIssue = new UnitDto()
                 {
                     Id = x.UnitOfUsage.Id,
@@ -76,6 +89,39 @@ namespace Hico.Services
                 }
             }).ToList();
              
+            return new MaterialsListResult()
+            {
+                Materials = materialsResult,
+                success = true,
+            };
+        }
+
+        public async Task<MaterialsListResult> GetActiveMaterials()
+        {
+            var materials = await GetQuery().Where(x => x.Active).ToListAsync();
+            if (materials == null)
+                return new MaterialsListResult()
+                {
+                    Materials = null,
+                    success = false,
+                };
+
+            var materialsResult = materials.Select(x => new MaterialDto()
+            {
+                Id = x.Id,
+                ManufacturerCode = x.ManufacturerCode,
+                PartNumber = x.PartNumber,
+                Price = x.Price,
+                Active = x.Active,
+                UnitOfIssue = new UnitDto()
+                {
+                    Id = x.UnitOfUsage.Id,
+                    Name = x.UnitOfUsage.Name,
+                    Type = x.UnitOfUsage.Type,
+                    TypeName = x.UnitOfUsage.Type.ToString(),
+                }
+            }).ToList();
+
             return new MaterialsListResult()
             {
                 Materials = materialsResult,
@@ -138,6 +184,17 @@ namespace Hico.Services
             };
         }
 
+        public async Task<MaterialResult> ToggleActiveMaterial(Guid id)
+        {
+            var materialToInactivate = await GetMaterial(id);
+            materialToInactivate.Active = !materialToInactivate.Active;
+            var success = await _dbContext.SaveChangesAsync();
+            return new MaterialResult()
+            {
+                success = success != 0 ? true : false
+            };
+        }
+
         public async Task<MaterialResult> CreateMaterial(AddEditMaterialDto material)
         {
             var unit = await _unitService.GetUnitById(material.UnitOfIssueId);
@@ -154,7 +211,8 @@ namespace Hico.Services
                 PartNumber = material.PartNumber,
                 Price = material.Price,
                 ManufacturerCode = material.ManufacturerCode,
-                UnitOfUsage = unit
+                UnitOfUsage = unit,
+                Active = true
 
             };
 

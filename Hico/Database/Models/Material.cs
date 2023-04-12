@@ -12,6 +12,8 @@ namespace Hico.Database.Models
         public Unit UnitOfUsage { get; set; }
         public int UnitOfUsageId { get; set; }
 
+        public bool Active { get; set; }
+
         public virtual ICollection<TaskMaterialUsage> TaskMaterialUsages { get; set; }
     }
 }

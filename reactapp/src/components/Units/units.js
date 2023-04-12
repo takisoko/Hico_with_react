@@ -33,7 +33,7 @@ export function Units() {
 
     const onDelete = (id) => {
         axios
-            .delete('https://localhost:7012/unit/' + id)
+            .delete('https://localhost:7012/unit/ToggleActive/' + id)
             .then(function (response) {
                 if (
                     (response && response.status === 201) ||
@@ -41,6 +41,8 @@ export function Units() {
                 ) {
                     setLoading(false);
                     fetchData();
+                    setCustomSnackbarType("success")
+                    setCustomMessage("Successfully changed unit")
                 }
             })
             .catch((e) => {
@@ -102,7 +104,7 @@ export function Units() {
                                     <TableCell align="left">{unit.name}</TableCell>
                                     <TableCell align="right">{unit.typeName}</TableCell>
                                     <TableCell align="right">
-                                        <DeleteModal id={unit.id} type="Unit" DeleteData={onDelete} name={unit.name} />
+                                        <DeleteModal id={unit.id} type="Unit" DeleteData={onDelete} name={unit.name} active={unit.active} />
                                     </TableCell>
                                 </TableRow>
                             )}

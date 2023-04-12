@@ -63,13 +63,15 @@ export function Materials() {
 
     const onDelete = (id) => {
         axios
-            .delete('https://localhost:7012/material/' + id)
+            .delete('https://localhost:7012/material/ToggleActive/' + id)
             .then(function (response) {
                 if (
                     (response && response.status === 201) ||
                     (response && response.status === 200)
                 ) {
                     setLoading(false);
+                    setCustomSnackbarType("success")
+                    setCustomMessage("Successfully changed material")
                     fetchData();
                 }
             })
@@ -117,9 +119,11 @@ export function Materials() {
                                 <TableCell>{material.manufacturerCode}</TableCell>
                                 <TableCell>{material.price}</TableCell>
                                 <TableCell>{material.unitOfIssue.name}</TableCell>
-                                <TableCell style={{ display: "flex" }}>                                    
-                                    <AddMaterialModal refreshTable={refreshTable} id={material.id} mode="edit" type={material.unitOfIssue.type} setCustomMessage={setCustomMessage} setCustomSnackbarType={setCustomSnackbarType} />
-                                    <DeleteModal id={material.id} type="Material" DeleteData={onDelete} name={material.partNumber} />
+                                <TableCell style={{ display: "flex" }}>
+                                    {material.active &&
+                                            <AddMaterialModal refreshTable={refreshTable} id={material.id} mode="edit" type={material.unitOfIssue.type} setCustomMessage={setCustomMessage} setCustomSnackbarType={setCustomSnackbarType} />
+                                    }
+                                    <DeleteModal id={material.id} type="Material" DeleteData={onDelete} name={material.partNumber} active={material.active } />
                                 </TableCell>
                             </TableRow>
                         )}

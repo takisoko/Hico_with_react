@@ -53,6 +53,19 @@ namespace Hico.Controllers
             return Ok(result.ToArray());
         }
 
+        // <summary>
+        /// Return a list of all active units.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("ActiveUnits/{unitType}")]
+        public async Task<IActionResult> GetActiveUnits(int unitType)
+        {
+            UnitTypeEnum? type = (UnitTypeEnum)unitType;
+            var result = await _unitService.GetActiveUnits(type);
+
+            return Ok(result.ToArray());
+        }
+
         /// <summary>
         /// Creates a unit.
         /// </summary>
@@ -74,6 +87,18 @@ namespace Hico.Controllers
         public async Task<IActionResult> DeleteUnitAsync(int id)
         {
             var result = await _unitService.DeleteUnit(id);
+
+            return Ok(result);
+        }
+        /// <summary>
+        /// Toggles if unit with given id is active.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("ToggleActive/{id}")]
+        public async Task<IActionResult> ToggleActiveUnitAsync(int id)
+        {
+            var result = await _unitService.ToggleActiveUnit(id);
 
             return Ok(result);
         }
