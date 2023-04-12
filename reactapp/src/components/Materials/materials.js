@@ -7,7 +7,7 @@ import { Button, Modal, Box, Typography, TextField, IconButton, Divider } from '
 import { DeleteModal } from "../DeleteModal";
 
 import { IconTrash, IconEdit } from "@tabler/icons-react";
-import { AddMaterialModal } from "./AddMaterialModal";
+import { AddMaterialModal } from "./MaterialModal";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
 

@@ -1,7 +1,7 @@
 import React, { Component, useState, useEffect } from "react";
 import axios, * as others from 'axios';
 import { useParams } from "react-router-dom";
-import { UnitModal } from "./Modal";
+import { UnitModal } from "./UnitModal";
 import { DeleteModal } from "../DeleteModal";
 import { CustomSnackbar } from "../Snackbar";
 import { IconTrash, IconEdit } from "@tabler/icons-react";
