@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from "react";
-import { Button, Modal, Box, Typography, TextField, IconButton, Divider } from '@mui/material';
+import { Button, Modal, Box, Typography, TextField, IconButton, Divider, Stack } from '@mui/material';
 /*import CloseIcon from '@mui/icons-material/Close';*/
 import axios, * as others from 'axios';
 import { useParams } from "react-router-dom";
@@ -96,7 +96,7 @@ export function UnitModal({ refreshTable, setCustomMessage, setCustomSnackbarTyp
                     
                     <form onSubmit={handleSubmit}>
                         {!loading && 
-                            <>
+                            <Stack spacing={3}>
                             <FormControl fullWidth>
                                 <TextField label="Name" fullWidth onChange={handleNameChange} />
                                 </FormControl>
@@ -116,7 +116,7 @@ export function UnitModal({ refreshTable, setCustomMessage, setCustomSnackbarTyp
                                         )}
                                     </Select>
                                 </FormControl>
-                            </>}
+                            </Stack>}
                         <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
                             <input type="submit" value="Submit" />
                         </Box>

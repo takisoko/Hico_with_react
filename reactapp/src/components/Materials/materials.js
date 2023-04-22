@@ -2,7 +2,7 @@ import React, { Component, useState, useEffect } from "react";
 import axios, * as others from 'axios';
 import { useParams } from "react-router-dom";
 import { CustomSnackbar } from "../Snackbar";
-import { Button, Modal, Box, Typography, TextField, IconButton, Divider } from '@mui/material';
+import { Button, Modal, Box, Typography, TextField, IconButton, Stack } from '@mui/material';
 /*import CloseIcon from '@mui/icons-material/Close';*/
 import { DeleteModal } from "../DeleteModal";
 
@@ -119,11 +119,13 @@ export function Materials() {
                                 <TableCell>{material.manufacturerCode}</TableCell>
                                 <TableCell>{material.price}</TableCell>
                                 <TableCell>{material.unitOfIssue.name}</TableCell>
-                                <TableCell style={{ display: "flex" }}>
-                                    {material.active &&
-                                            <AddMaterialModal refreshTable={refreshTable} id={material.id} mode="edit" type={material.unitOfIssue.type} setCustomMessage={setCustomMessage} setCustomSnackbarType={setCustomSnackbarType} />
-                                    }
-                                    <DeleteModal id={material.id} type="Material" DeleteData={onDelete} name={material.partNumber} active={material.active } />
+                                <TableCell >
+                                    <Stack spacing={1} direction="row">
+                                        {material.active &&
+                                                <AddMaterialModal refreshTable={refreshTable} id={material.id} mode="edit" type={material.unitOfIssue.type} setCustomMessage={setCustomMessage} setCustomSnackbarType={setCustomSnackbarType} />
+                                        }
+                                        <DeleteModal id={material.id} type="Material" DeleteData={onDelete} name={material.partNumber} active={material.active } />
+                                    </Stack>
                                 </TableCell>
                             </TableRow>
                         )}

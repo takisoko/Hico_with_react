@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from "react";
-import { Button, Modal, Box, Typography, TextField, IconButton, Divider } from '@mui/material';
+import { Button, Modal, Box, Typography, TextField, IconButton, Divider, Stack } from '@mui/material';
 /*import CloseIcon from '@mui/icons-material/Close';*/
 import axios, * as others from 'axios';
 import {    FormControl, InputLabel, Select, MenuItem } from "@mui/material";
@@ -158,7 +158,7 @@ export function AddMaterialModal({ refreshTable, id, mode, type, setCustomMessag
                     
                     <form onSubmit={handleSubmit}>
                         {!loading && 
-                            <>
+                            <Stack spacing={3}>
                             <FormControl fullWidth>
                                     <TextField label="PartNumber" value={formData.PartNumber} fullWidth onChange={handlePartNumberChange} />
                                 </FormControl>
@@ -185,7 +185,7 @@ export function AddMaterialModal({ refreshTable, id, mode, type, setCustomMessag
                                         )}
                                     </Select>
                                 </FormControl>
-                            </>}
+                            </Stack>}
                         <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
                             <input variant="contained" type="submit" value="Submit" />
                         </Box>

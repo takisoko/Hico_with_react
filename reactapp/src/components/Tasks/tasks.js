@@ -3,7 +3,7 @@ import axios, * as others from 'axios';
 import { useParams } from "react-router-dom";
 import { TaskModal } from "./TaskModal";
 import { CustomSnackbar } from "../Snackbar";
-import { Button, Modal, Box, Typography, TextField, IconButton, Divider } from '@mui/material';
+import { Button, Modal, Box, Typography, TextField, IconButton, Stack } from '@mui/material';
 import { DeleteModal } from "../DeleteModal";
 
 import { IconTrash, IconEdit } from "@tabler/icons-react";
@@ -113,9 +113,11 @@ export function Tasks() {
                                 <TableCell align="right">{ task.taskMaterialUsage.amount }</TableCell>
                                 <TableCell align="right">{task.taskMaterialUsage.unitOfMeasurement.name}</TableCell>
                                 <TableCell align="right">{task.taskMaterialUsage.material.partNumber}</TableCell>
-                                <TableCell align="right" style={{ display: "flex" }}>
-                                    <DeleteModal id={task.id} type="Task" DeleteData={onDelete} name={task.name} />
-                                    <TaskModal refreshTable={refreshTable} id={task.id} mode="edit" type={0} setCustomMessage={setCustomMessage} setCustomSnackbarType={setCustomSnackbarType} />
+                                <TableCell align="right">
+                                    <Stack spacing={1} direction="row">
+                                        <DeleteModal id={task.id} type="Task" DeleteData={onDelete} name={task.name} />
+                                        <TaskModal refreshTable={refreshTable} id={task.id} mode="edit" type={0} setCustomMessage={setCustomMessage} setCustomSnackbarType={setCustomSnackbarType} />
+                                    </Stack>
                                 </TableCell>
                             </TableRow>
                         )}
