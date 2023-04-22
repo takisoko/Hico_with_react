@@ -61,7 +61,7 @@ export function Materials() {
             });
     };
 
-    const onDelete = (id) => {
+    const onDelete = (id, active) => {
         axios
             .delete('https://localhost:7012/material/ToggleActive/' + id)
             .then(function (response) {
@@ -71,7 +71,13 @@ export function Materials() {
                 ) {
                     setLoading(false);
                     setCustomSnackbarType("success")
-                    setCustomMessage("Successfully changed material")
+
+                    let message = "";
+                    if (active)
+                        message = "Successfully archived material"
+                    else
+                        message = "Successfully reverted material"
+                    setCustomMessage(message)
                     fetchData();
                 }
             })

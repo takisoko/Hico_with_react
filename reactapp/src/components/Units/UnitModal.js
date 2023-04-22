@@ -3,8 +3,8 @@ import { Button, Modal, Box, Typography, TextField, IconButton, Divider, Stack }
 /*import CloseIcon from '@mui/icons-material/Close';*/
 import axios, * as others from 'axios';
 import { useParams } from "react-router-dom";
-import {    FormControl, InputLabel, Select, MenuItem } from "@mui/material";
-
+import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import { IconEdit, IconX } from "@tabler/icons-react";
     
 
 
@@ -46,7 +46,8 @@ export function UnitModal({ refreshTable, setCustomMessage, setCustomSnackbarTyp
     }
 
     const handleNameChange = (e) => {
-        setFormData({ typeName: formData.type, name: e.target.value });
+        console.log("handleNameChange", formData)
+        setFormData({ typeName: formData.typeName, name: e.target.value });
     }
 
     const handleOpen = () => {
@@ -55,7 +56,7 @@ export function UnitModal({ refreshTable, setCustomMessage, setCustomSnackbarTyp
 
     const handleClose = () => {
         setOpen(false);
-        setFormData({ typeName: '', name: '' });
+        setFormData({ typeName: formData.typeName, name: '' });
     };
 
     const handleSubmit = (event) => {
@@ -89,7 +90,7 @@ export function UnitModal({ refreshTable, setCustomMessage, setCustomSnackbarTyp
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <Typography variant="h6" component="h2">Add New Material</Typography>
                         <IconButton onClick={handleClose}>
-                            {/*<CloseIcon />*/}
+                            <IconX />
                         </IconButton>
                     </Box>
                     <Divider sx={{ my: 2 }} />

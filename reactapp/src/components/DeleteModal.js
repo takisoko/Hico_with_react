@@ -10,7 +10,8 @@ import { IconTrash, IconX, IconRotateClockwise2 } from "@tabler/icons-react";
 export function DeleteModal({ id, DeleteData, type, name, active }) {
     const [open, setOpen] = useState(false);
     const handleDelete = () => {
-        DeleteData(id);
+        DeleteData(id, active);
+        setOpen(false);
     };
 
 
@@ -35,7 +36,7 @@ export function DeleteModal({ id, DeleteData, type, name, active }) {
                         </IconButton>
                     </Box>
                     <Divider sx={{ my: 2 }} />
-                    <Typography variant="Body2" component="Body2">Are you sure you want to { type == "Task" ? "delete" : (active ? "deactivate" : "activate")} "{name}" {type}?</Typography>
+                    <Typography variant="subtitle1">Are you sure you want to { type == "Task" ? "delete" : (active ? "deactivate" : "activate")} "{name}" {type}?</Typography>
                     
                     <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
                         <Button variant="contained" color="error" onClick={handleDelete}>Confirm</Button>

@@ -31,7 +31,7 @@ export function Units() {
         setIndex(index + 1);
     };
 
-    const onDelete = (id) => {
+    const onDelete = (id, active) => {
         axios
             .delete('https://localhost:7012/unit/ToggleActive/' + id)
             .then(function (response) {
@@ -42,7 +42,12 @@ export function Units() {
                     setLoading(false);
                     fetchData();
                     setCustomSnackbarType("success")
-                    setCustomMessage("Successfully changed unit")
+                    let message = "";
+                    if (active)
+                        message = "Successfully archived unit"
+                    else
+                        message = "Successfully reverted unit"
+                    setCustomMessage(message)
                 }
             })
             .catch((e) => {

@@ -95,10 +95,10 @@ export function Tasks() {
                         <TableRow>
                             <TableCell align="left">Id</TableCell>
                             <TableCell align="left">Name</TableCell>
-                            <TableCell align="right">description</TableCell>
-                            <TableCell align="right">totalDuration</TableCell>
-                            <TableCell align="right">amount</TableCell>
-                            <TableCell align="right">unitOfMeasurement name</TableCell>
+                            <TableCell align="right">Description</TableCell>
+                            <TableCell align="right">Total Duration</TableCell>
+                            <TableCell align="right">Amount</TableCell>
+                            <TableCell align="right">Unit Of Measurement</TableCell>
                             <TableCell align="right">Material</TableCell>
                             <TableCell align="right">Actions</TableCell>
                         </TableRow>
