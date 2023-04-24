@@ -113,13 +113,21 @@ namespace Hico.Services
 
             var unit = await _unitService.GetUnitById(Task.UnitOfMeasurementId);
             var material = await _materialService.GetMaterial(Task.MaterialId);
-            //var previousUnit = await _unitService.GetUnitById(TaskToUpdate.TaskMaterialUsage.UnitOfMeasurement.Id);
 
-            if (material.UnitOfUsage != null && unit != null && material.UnitOfUsage.Type != unit.Type)
+            if (unit == null)
             {
                 return new TaskResult()
                 {
-                    success = false
+                    success = false,
+                    Message = "Unit not found"
+                };
+            }
+            else if (material.UnitOfUsage.Type != unit.Type)
+            {
+                return new TaskResult()
+                {
+                    success = false,
+                    Message = "Unit must be of the same type as material's unit"
                 };
             }
 

@@ -11,11 +11,11 @@ export class Home extends Component {
             <div className="conainer">
                 <h1>Hello, Hico!</h1>
                 <p>This is a project I made based on given requirements</p>
-                <p>These are the ways I would do to improve this project:</p>
+                <p>These are the things I would do to improve this project:</p>
                 
                 <ul>
                   <li>Improve the UI (either hire a designer, use a theme...)</li>
-                  <li>Add authorization and users</li>
+                  <li>Add authentication and authorization</li>
                   <li>Have an admin part with user management, actual delete of materials, units etc.</li>
                   <li>Change Unit type from enum to a table and allow the admin to add/remove them</li>
                 </ul>

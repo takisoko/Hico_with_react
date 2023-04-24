@@ -10,11 +10,9 @@ namespace Hico.Controllers
     public class MaterialController : ControllerBase
     {
         private readonly IMaterialService _materialService;
-        private readonly IUnitService _unitService;
-        public MaterialController(IMaterialService materialService, IUnitService unitService)
+        public MaterialController(IMaterialService materialService)
         {
             _materialService = materialService; 
-            _unitService = unitService;
         }
         /// <summary>
         /// Return a material with given id.
@@ -48,7 +46,7 @@ namespace Hico.Controllers
         }
         
         // <summary>
-        /// Return a list of all active  materials.
+        /// Return a list of all active materials.
         /// </summary>
         /// <returns></returns>
         [HttpGet("ActiveMaterials")]

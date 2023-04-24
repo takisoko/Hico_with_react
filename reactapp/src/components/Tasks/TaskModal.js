@@ -15,7 +15,7 @@ export function TaskModal({ refreshTable, id, mode, type, setCustomMessage, setC
     const [materials, setMaterials] = useState([]);
     const [loading, setLoading] = useState(true);
     const [formData, setFormData] = useState({ Name: "", Description: "", TotalDuration: 0, Amount: 0, UnitOfMeasurementId: '', MaterialId: 0 });
-    const [inactiveUnit, setInactiveUnit] = useState({ unitId: 0, active: true, name: "" });
+    const [inactiveUnit, setInactiveUnit] = useState({ unitId: '', active: true, name: "" });
     const [inactiveMaterial, setInactiveMaterial] = useState({ Id: 0, active: true, name: "" });
 
     useEffect(() => {
@@ -42,7 +42,7 @@ export function TaskModal({ refreshTable, id, mode, type, setCustomMessage, setC
     }, [materials]);
 
     useEffect(() => {
-        if (unitsUsed != 0)
+        if (unitsUsed != 0 && mode == 'edit')
             setUnitId(formData.UnitOfMeasurementId)
 
     }, [unitsUsed]);
@@ -67,8 +67,14 @@ export function TaskModal({ refreshTable, id, mode, type, setCustomMessage, setC
     };
 
     const getMaterials = () => {
+
+        let url = 'https://localhost:7012/material';
+        if (mode != 'edit')
+            url += '/ActiveMaterials'
+        
+
         axios
-            .get('https://localhost:7012/material')
+            .get(url)
         .then(function (response) {
             if (
                 (response && response.status === 201) ||
@@ -152,8 +158,11 @@ export function TaskModal({ refreshTable, id, mode, type, setCustomMessage, setC
     };
 
     const handleClose = () => {
-
         setFormData({ Id: "", Name: "", Description: "", TotalDuration: 0, Amount: 0, UnitOfMeasurementId: 0, MaterialId: 0 });
+        if (mode != 'edit') {
+            setUnitsUsed([]);
+            setUnitId('');
+        }
         setOpen(false);
     };
 

@@ -46,7 +46,6 @@ export function UnitModal({ refreshTable, setCustomMessage, setCustomSnackbarTyp
     }
 
     const handleNameChange = (e) => {
-        console.log("handleNameChange", formData)
         setFormData({ typeName: formData.typeName, name: e.target.value });
     }
 

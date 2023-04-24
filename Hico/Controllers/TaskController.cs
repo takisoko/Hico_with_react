@@ -9,11 +9,9 @@ namespace Hico.Controllers
     [Route("[controller]")]
     public class TaskController : ControllerBase
     {
-        private readonly IMaterialService _materialService;
         private readonly ITaskService _taskService;
-        public TaskController(IMaterialService materialService, ITaskService taskService)
+        public TaskController(ITaskService taskService)
         {
-            _materialService = materialService;
             _taskService = taskService;
         }
         // <summary>

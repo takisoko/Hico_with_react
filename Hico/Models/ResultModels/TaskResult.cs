@@ -4,5 +4,6 @@
     {
         public TaskDto Task { get; set; }
         public bool success { get; set; }
+        public string Message { get; set; }
     }
 }
