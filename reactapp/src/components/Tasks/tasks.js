@@ -115,8 +115,8 @@ export function Tasks() {
                                 <TableCell align="right">{task.taskMaterialUsage.material.partNumber}</TableCell>
                                 <TableCell align="right">
                                     <Stack spacing={1} direction="row">
-                                        <DeleteModal id={task.id} type="Task" DeleteData={onDelete} name={task.name} />
                                         <TaskModal refreshTable={refreshTable} id={task.id} mode="edit" type={0} setCustomMessage={setCustomMessage} setCustomSnackbarType={setCustomSnackbarType} />
+                                        <DeleteModal id={task.id} type="Task" DeleteData={onDelete} name={task.name} />                                        
                                     </Stack>
                                 </TableCell>
                             </TableRow>
